@@ -5,19 +5,17 @@ package body Raylib is
     use Interfaces.C;
 
     package body Window is
-        procedure Init (W, H : Positive; Title : String) is
+        procedure Init (Width, Height : int; Title : String) is
             use Interfaces.C.Strings;
 
-            procedure InitWindow (W, H : int; Title : chars_ptr)
+            procedure InitWindow (Width, Height : int; Title : chars_ptr)
                 with Import        => true,
                      Convention    => C,
                      External_Name => "InitWindow";
             
-            C_W     : int       := int(W);
-            C_H     : int       := int(H);
-            C_Title : chars_ptr := New_String(Title);
+            C_Title : chars_ptr := New_String (Title);
         begin
-            InitWindow (C_W, C_H, C_Title);
+            InitWindow (Width, Height, C_Title);
         end Init;
 
         function Should_Close return Boolean is
@@ -26,13 +24,21 @@ package body Raylib is
                      Convention    => C,
                      External_Name => "WindowShouldClose";
         
-            Result : Boolean := Boolean(WindowShouldClose);
+            Result : Boolean := Boolean (WindowShouldClose);
         begin
             return Result;
         end Should_Close;
-    end Window;
+    
+        function Is_Ready return Boolean is
+            function IsWindowReady return C_bool
+                with Import        => true,
+                     Convention    => C,
+                     External_Name => "IsWindowReady";
+        
+            Result : Boolean := Boolean (IsWindowReady);
+        begin
+            return Result;
+        end Is_Ready;
 
-    package body Drawing is
-        procedure Clear_Background (C : Color) 
-    end package;
+    end Window;
 end Raylib;
