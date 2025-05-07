@@ -311,7 +311,7 @@ package Raylib is
                  Convention    => C, 
                  External_Name => "EndMode2D";
         -- Begin drawing to render texture
-        procedure Start_Texture_Mode (Target : Renderer_Texture_2D) 
+        procedure Start_Texture_Mode (Target : Render_Texture_2D) 
             with Import        => true, 
                  Convention    => C, 
                  External_Name => "StartTextureMode";
@@ -504,12 +504,12 @@ package Raylib is
                  Convention    => C, 
                  External_Name => "DrawTriangleLines";
         -- Draw a triangle fan defined by points (first vertex is the center)
-        procedure Draw_Triangle_Fan (Points : access Vector_2, Point_Count : int; C : Color) 
+        procedure Draw_Triangle_Fan (Points : access Vector_2; Point_Count : int; C : Color) 
             with Import        => true, 
                  Convention    => C, 
                  External_Name => "DrawTriangleFan";
         -- Draw a triangle strip defined by points
-        procedure Draw_Triangle_Strip (Points : access Vector_2, Point_Count : int; C : Color) 
+        procedure Draw_Triangle_Strip (Points : access Vector_2; Point_Count : int; C : Color) 
             with Import        => true, 
                  Convention    => C, 
                  External_Name => "DrawTriangleStrip";
@@ -519,7 +519,7 @@ package Raylib is
                  Convention    => C, 
                  External_Name => "DrawPoly";
         -- Draw a polygon outline of n sides
-        procedure Draw_Poly_Lines (Center : Vector_2; Sides : int; Radius, Rotation : Float, C : Color) 
+        procedure Draw_Poly_Lines (Center : Vector_2; Sides : int; Radius, Rotation : Float; C : Color) 
             with Import        => true,
                  Convention    => C, 
                  External_Name => "DrawPolyLines";
