@@ -8,39 +8,28 @@ package Raylib is
     --///////////////////////////////////////////////////////////////////////
     -- Structures Definition
     --//////////////////////////////////////////////////////////////////////
-
-    --
     -- Vector_2, 2 components
-    --
     type Vector_2 is record
         X, Y : Float; -- Vector X and Y components
     end record
         with Convention => C_Pass_By_Copy;
 
-    --
     -- Vector_3, 3 components
-    --
     type Vector_3 is record
         X, Y, Z : Float; -- Vector X, Y and Z components
     end record
         with Convention => C_Pass_By_Copy;
 
-    --
     -- Vector_4, 4 components
-    --
     type Vector_4 is record
         X, Y, Z, W : Float; -- Vector X, Y, Z and W components
     end record
         with Convention => C_Pass_By_Copy;
 
-    --
     -- Quaternion, 4 components (Vector_4 alias)
-    --
     type Quaternion is new Vector_4;
 
-    --
     -- Matrix, 4x4 components, column major, OpenGL style, right-handed
-    --
     type Matrix is record
         M_0, M_4, M_8, M_12  : Float; -- Matrix first row (4 components)
         M_1, M_5, M_9, M_13  : Float; -- Matrix second row (4 components)
@@ -49,26 +38,20 @@ package Raylib is
     end record
         with Convention => C_Pass_By_Copy;
 
-    --
     -- Color, 4 components, R8G8B8A8 (32-bit)
-    --
     type Color is record
         R, G, B, A : unsigned_char; -- Color red, green, blue and alpha values
     end record
         with Convention => C_Pass_By_Copy;
 
-    --
     -- Rectangle, 4 components
-    --
     type Rectangle is record
         X, Y          : Float; -- Rectangle top-left corner X and Y position
         Width, Height : Float; -- Rectangle width and height
     end record
         with Convention => C_Pass_By_Copy;
 
-    --
     -- Image, pixel data stored in CPU memory (RAM)
-    --
     type Image is record
         Data          : System.Address; -- Image raw data
         Width, Height : int;            -- Image base width and height
@@ -77,9 +60,7 @@ package Raylib is
     end record
         with Convention => C_Pass_By_Copy;
 
-    --
     -- Texture_2D, tex data stored in GPU memory (VRAM)
-    --
     type Texture_2D is record
         ID            : unsigned; -- OpenGL texture ID
         Width, Height : int;      -- Texture base width and height
@@ -88,9 +69,7 @@ package Raylib is
     end record
         with Convention => C_Pass_By_Copy;
 
-    --
     -- Render_Texture_2D, FBO for texture rendering
-    --
     type Render_Texture_2D is record
         ID      : unsigned;   -- OpenGL framebuffer object ID
         Texture : Texture_2D; -- Color buffer attachment texture
@@ -98,9 +77,7 @@ package Raylib is
     end record
         with Convention => C_Pass_By_Copy;
 
-    --
     -- NPatch_Info, n-patch layout info
-    --
     type NPatch_Info is record
         Source                   : Rectangle; -- Texture source rectangle
         Left, Top, Right, Bottom : int;       -- Character border offsets
@@ -108,9 +85,7 @@ package Raylib is
     end record
         with Convention => C_Pass_By_Copy;
 
-    --
     -- Glyph_Info, font characters glyphs info
-    --
     type Glyph_Info is record
         Value            : int;   -- Character value (Unicode)
         OffsetX, OffsetY : int;   -- Character X and Y offset when drawing
@@ -119,9 +94,7 @@ package Raylib is
     end record
         with Convention => C_Pass_By_Copy;
 
-    --
     -- Font, font texture and Glyph_Info array data
-    --
     type Font is record
         BaseSize     : int;               -- Base size (default chars height)
         GlyphCount   : int;               -- Number of glyph characters
@@ -132,21 +105,17 @@ package Raylib is
     end record
         with Convention => C_Pass_By_Copy;
 
-    --
     -- Camera_3D, defines position and orientation in 3D space
-    --
-    --type Camera_3D is record
-    --    Position   : Vector_3; -- Camera position
-    --    Target     : Vector_3; -- Camera target it looks-at
-    --    Up         : Vector_3; -- Camera up vector (rotation over its axis)
-    --    Fov_Y      : Float;    -- Camera field-of-view aperture in Y (degrees) in perspective, used as near plane width in orthohtaphic
-    --    Projection : int;      -- Camera projection : CameraProjection.Perspective or CameraProjection.Orthographic
-    --end record
-    --    with Convention => C_Pass_By_Copy;
+    type Camera_3D is record
+        Position   : Vector_3; -- Camera position
+        Target     : Vector_3; -- Camera target it looks-at
+        Up         : Vector_3; -- Camera up vector (rotation over its axis)
+        Fov_Y      : Float;    -- Camera field-of-view aperture in Y (degrees) in perspective, used as near plane width in orthohtaphic
+        Projection : int;      -- Camera projection : CameraProjection.Perspective or CameraProjection.Orthographic
+    end record
+        with Convention => C_Pass_By_Copy;
 
-    --
     -- Camera_2D, defines position and orientation in 2D space
-    --
     type Camera_2D is record
         Offset   : Vector_2; -- Camera offset (displacement from target)
         Target   : Vector_2; -- Camera target (rotation and zoom origin)
@@ -155,86 +124,165 @@ package Raylib is
     end record
         with Convention => C_Pass_By_Copy;
 
-    --
     -- Mesh, vertex data and VAO/VBO
-    --
-    --type Mesh is record
-    --    Vertex_Count   : int; -- Number of verticies stored in arrays
-    --    Triangle_Count : int; -- Number of triangles stored (indexed or not)
+    type Mesh is record
+        Vertex_Count   : int; -- Number of verticies stored in arrays
+        Triangle_Count : int; -- Number of triangles stored (indexed or not)
 
-    --    -- Vertex attributes data
-    --    Verticies        : access Float;         -- Vertex position (XYZ - 3 components per vertex) (shader-location = 0)
-    --    Texture_Coords   : access Float;         -- Vertex texture coordinates (UV - 2 components per vertex (shader-location = 1)
-    --    Texture_Coords_2 : access Float;         -- Vertex texture second coordinates (UV - 2 components per vertex) (shader-location = 5)
-    --    Normals          : access Float;         -- Vertex normals (XYZ - 3 components per vertex) (shader-location = 2)
-    --    Tangents         : access Float;         -- Vertex tangents (XYZW - 4 components per vertex) (shader-location = 3)
-    --    Colors           : access unsigned_char; -- Vertex colors (RGBA - 4 components per vertex) (shader-location = 3)
-    --    Indicies         : access unsigned_char; -- Vertex indicies (in case vertex data comes indexed)
-    --
-    --    -- Animation vertex data
-    --    Anim_Verticies : access Float;         -- Animated vertex positions (after bones transformations)
-    --    Anim_Normals   : access Float;         -- Animated normals (after bones transformations)
-    --    Bone_IDs       : access unsigned_char; -- Vertex bone IDs, max 255 bone IDs, up to 4 bones influence by vertex (skinning) (shader-location = 6)
-    --    Bone_Weights   : access Float;         -- Vertex bone weight, up to 4 bones influence by vertex (skinning) (shader-location = 7)
-    --    Bone_Matricies : access Matrix;        -- Bones animated transformations matricies
-    --    Bone_Count     : int;                  -- Number of bones
+        -- Vertex attributes data
+        Verticies        : access Float;         -- Vertex position (XYZ - 3 components per vertex) (shader-location = 0)
+        Texture_Coords   : access Float;         -- Vertex texture coordinates (UV - 2 components per vertex (shader-location = 1)
+        Texture_Coords_2 : access Float;         -- Vertex texture second coordinates (UV - 2 components per vertex) (shader-location = 5)
+        Normals          : access Float;         -- Vertex normals (XYZ - 3 components per vertex) (shader-location = 2)
+        Tangents         : access Float;         -- Vertex tangents (XYZW - 4 components per vertex) (shader-location = 3)
+        Colors           : access unsigned_char; -- Vertex colors (RGBA - 4 components per vertex) (shader-location = 3)
+        Indicies         : access unsigned_char; -- Vertex indicies (in case vertex data comes indexed)
+    
+        -- Animation vertex data
+        Anim_Verticies : access Float;         -- Animated vertex positions (after bones transformations)
+        Anim_Normals   : access Float;         -- Animated normals (after bones transformations)
+        Bone_IDs       : access unsigned_char; -- Vertex bone IDs, max 255 bone IDs, up to 4 bones influence by vertex (skinning) (shader-location = 6)
+        Bone_Weights   : access Float;         -- Vertex bone weight, up to 4 bones influence by vertex (skinning) (shader-location = 7)
+        Bone_Matricies : access Matrix;        -- Bones animated transformations matricies
+        Bone_Count     : int;                  -- Number of bones
 
-    --    -- OpenGL identifiers
-    --    VAO_ID : unsigned; -- OpenGL Vertex Array Object ID
-    --    VBO_ID : unsigned; -- OpenGL Vertex Buffer Objects ID (default vertex data)
-    --end record
-    --    with Convention => C_Pass_By_Copy;
+        -- OpenGL identifiers
+        VAO_ID : unsigned; -- OpenGL Vertex Array Object ID
+        VBO_ID : unsigned; -- OpenGL Vertex Buffer Objects ID (default vertex data)
+    end record
+        with Convention => C_Pass_By_Copy;
 
-    --
     -- Shader
-    --
-    --type Shader is record
-    --    ID   : unsigned;   -- Shader program ID
-    --    Locs : access int; -- Shader locations array
-    --end record
-    --    with Convention => C_Pass_By_Copy;
+    type Shader is record
+        ID   : unsigned;   -- Shader program ID
+        Locs : access int; -- Shader locations array
+    end record
+        with Convention => C_Pass_By_Copy;
 
-    --
     -- Material_Map
-    --
-    --type Material_Map is record
-    --    Texture : Texture_2D; -- Material map texture
-    --    Colr    : Color;      -- Material map color
-    --    Value   : Float;      -- Material map value
-    --end record
-    --    with Convention => C_Pass_By_Copy;
+    type Material_Map is record
+        Texture : Texture_2D; -- Material map texture
+        Colr    : Color;      -- Material map color
+        Value   : Float;      -- Material map value
+    end record
+        with Convention => C_Pass_By_Copy;
 
-    --
     -- Material, includes shader and maps
-    --
-    --type Material is record
-    --    Shadr  : Shader;                -- Material shader
-    --    Maps   : access Material_Map;   -- Material maps array
-    --    Params : Array (0..3) of Float; -- Material generic parameters (if required)
-    --    Materi
-    --end record;
+    type Material_Params is Array (0 .. 2) of Float;
+    type Material is record
+        Shadr  : Shader;              -- Material shader
+        Maps   : access Material_Map; -- Material maps array
+        Params : Material_Params;     -- Material generic parameters (if required)
+    end record
+        with Convention => C_Pass_By_Copy;
+
+    -- Transform, vertex transformation data
+    type Transform is record
+        Translation : Vector_3;   -- Translation
+        Rotation    : Quaternion; -- Rotation
+        Scale       : Vector_3;   -- Scale
+    end record 
+        with Convention => C_Pass_By_Copy;
+
+    -- Bone_Info, skeletal animation bone
+    type Bone_Info_Name is Array (0 .. 31) of char;
+    type Bone_Info is record 
+        Name   : Bone_Info_Name; -- Bone name
+        Parent : int;            -- Bone parent
+    end record 
+        with Convention => C_Pass_By_Copy;
+
+    -- Model, meshes, materials and animation data
+    type Model is record 
+        Matrix : Transform;  -- Local transformation matrix
+
+        Mesh_Count     : int;             -- Number of meshes
+        Material_Count : int;             -- Number of materials
+        Meshes         : access Mesh;   -- Meshes array
+        Materials      : access Material; -- Materials array
+        Mesh_Material  : int;             -- Mesh material number
+
+        -- Animation data
+        Bone_Count : int;              -- Number of bones
+        Bones      : access Bone_Info; -- Bones information (skeleton)
+        Bind_Pose  : access Transform; -- Bones base transformation (pose)
+    end record 
+        with Convention => C_Pass_By_Copy;
+
+    -- Model_Animation
+    type Model_Animation_Name is Array (0 .. 31) of char;
+    type Model_Animation is record 
+        Bone_Count  : int;                  -- Number of bones
+        Frame_Count : int;                  -- Number of animation frames
+        Bones       : access Bone_Info;     -- Bones information (skeleton)
+        Name        : Model_Animation_Name; -- Animation name
+    end record 
+        with Convention => C_Pass_By_Copy;
+
+    -- Ray, ray for raycasting
+    type Ray is record 
+        Position  : Vector_3; -- Ray position (origin)
+        Direction : Vector_3; -- Ray direction (normalized)
+    end record 
+        with Convention => C_Pass_By_Copy;
+
+    -- TODO : Ray_Collision
+
+    -- Bounding_Box
+    type Bounding_Box is record 
+        Min : Vector_3; -- Minimum vertex box-corner
+        Max : Vector_3; -- Maximum vertex box-corner
+    end record 
+        with Convention => C_Pass_By_Copy;
+
+    -- Wave, audio wave data
+    type Wave is record 
+        Frame_Count : unsigned;       -- Total number of frames (considering channels)
+        Sample_Rate : unsigned;       -- Frequency (samples per second)
+        Sample_Size : unsigned;       -- Bit depth (bits per sample): 8, 16, 32 (24 not supported) 
+        Channels    : unsigned;       -- Number of channels (1-mono, 2-stereo, ...)
+        Data        : System.Address; -- Buffer data pointer
+    end record 
+        with Convention => C_Pass_By_Copy;
+
+    -- TODO : rAudioBuffer
+    -- TODO : rAudioProcessor
+
+    -- Audio_Stream, custom audio stream
+    type Audio_Stream is record 
+        -- buffer
+        -- processor
+        
+        Sample_Rate : unsigned; -- Frequency (samples per second)
+        Sample_Size : unsigned; -- Bit depth (bits per sample): 8, 16, 32 (24 not supported) 
+        Channels    : unsigned; -- Number of channels (1-mono, 2-stereo, ...)
+    end record 
+        with Convention => C_Pass_By_Copy;
+
+    -- Sound
+    type Sound is record
+        Stream      : Audio_Stream; -- Audio stream
+        Frame_Count : unsigned;     -- Total number of frames (considering channels)
+    end record
+        with Convention => C_Pass_By_Copy;
+
+    -- Music, audio stream, anything longer than ~10 seconds should be streamed
+    type Music is record 
+        Stream : Audio_Stream;
+        Frame_Count : unsigned;
+
+    end record 
+        with Convention => C_Pass_By_Copy;
+
+    -- TODO : file stuff
 
     --///////////////////////////////////////////////////////////////////////
     -- Enumerators Definition
-    --//////////////////////////////////////////////////////////////////////
-    
-    --
-    -- System and Window config flags
-    --
-    --type Config_Flags is ();
+    --///////////////////////////////////////////////////////////////////////
 
-    --
-    -- Trace log level
-    --
-    type Trace_Log_Level is (Log_All, Log_Trace, Log_Debug, 
-                             Log_Info, Log_Warning, Log_Error, 
-                             Log_Fatal, Log_None);
-
-    type CameraProjection is (Perspective, Orthographic);
-
-    --
+    --///////////////////////////////////////////////////////////////////////
     -- Predefined color constants
-    --
+    --///////////////////////////////////////////////////////////////////////
     Light_Gray  : constant Color := (200, 200, 200, 255);
     Gray        : constant Color := (130, 130, 130, 255);
     Dark_Gray   : constant Color := (80, 80, 80, 255);
@@ -264,22 +312,18 @@ package Raylib is
     Ray_White : constant Color := (245, 245, 245, 255);
 
     package Window is
-        --
-        -- Initialization and deinitialization
-        --
+        -- Initialize window and OpenGL context
         procedure Init (Width, Height : int; Title : String);
+        -- Close window and unload OpenGL context
         procedure Close
             with Import        => true,
                  Convention    => C,
                  External_Name => "CloseWindow";
-        --
-        -- Has close been requested
-        --
+        -- Check if application should close (KEY_ESCAPE pressed or windows close icon clicked)
         function Should_Close return Boolean;
-        --
-        -- Window status getters
-        --
+        -- Check if window has been initialized successfully
         function Is_Ready return Boolean;
+
     end Window;
 
     package Drawing is
@@ -340,9 +384,10 @@ package Raylib is
             with Import        => true, 
                  Convention    => C, 
                  External_Name => "EndScissorMode";
-        --
-        -- Shape drawing functions
-        --
+       
+        --///////////////////////////////////////////////////////////////////////
+        -- Basic shapes Drawing functions (Module : shapes)
+        --//////////////////////////////////////////////////////////////////////
         -- Draw a pixel using geometry (Can be slow, use with care)
         procedure Draw_Pixel (X, Y : int; C : Color)
             with Import        => true,
