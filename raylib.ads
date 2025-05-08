@@ -1,9 +1,36 @@
 with Interfaces.C;
+with Interfaces.C.Strings;
 with System;
 
 package Raylib is
     use Interfaces.C;
+    use Interfaces.C.Strings;
     use System;
+
+    --///////////////////////////////////////////////////////////////////////
+    -- Enumerators Definition
+    --///////////////////////////////////////////////////////////////////////
+    -- TODO : ConfigFlags
+    -- TODO : TraceLogLevel
+    -- TODO : KeyboardKey
+    -- TODO : MouseButton
+    -- TODO : MouseCursor
+    -- TODO : GamepadButton
+    -- TODO : GamepadAxis
+    -- TODO : MaterialMapIndex
+    -- TODO : ShaderLocationIndex
+    -- TODO : ShaderUniformDataType
+    -- TODO : ShaderAttributeDataType
+    -- TODO : PixelFormat
+    -- TODO : TextureFilter
+    -- TODO : TextureWrap
+    -- TODO : CubemapLayout
+    -- TODO : FontType
+    -- TODO : BlendMode
+    -- TODO : Gesture
+    -- TODO : CameraMode
+    -- TODO : CameraProjection
+    -- TODO : NPatchLayout
 
     --///////////////////////////////////////////////////////////////////////
     -- Structures Definition
@@ -245,13 +272,10 @@ package Raylib is
     end record 
         with Convention => C_Pass_By_Copy;
 
-    -- TODO : rAudioBuffer
-    -- TODO : rAudioProcessor
-
     -- Audio_Stream, custom audio stream
     type Audio_Stream is record 
-        -- buffer
-        -- processor
+        Buffer    : System.Address; -- Pointer to internal data used by the audio system
+        Processor : System.Address; -- Pointer to internal data processor, useful for audio effects
         
         Sample_Rate : unsigned; -- Frequency (samples per second)
         Sample_Size : unsigned; -- Bit depth (bits per sample): 8, 16, 32 (24 not supported) 
@@ -268,17 +292,42 @@ package Raylib is
 
     -- Music, audio stream, anything longer than ~10 seconds should be streamed
     type Music is record 
-        Stream : Audio_Stream;
-        Frame_Count : unsigned;
+        Stream      : Audio_Stream; -- Audio stream
+        Frame_Count : unsigned;     -- Total number of frames (considering channels)
+        -- TODO : looping bool             -- Music looping enable
 
+        Ctx_Type : int             -- Type of music context (audio filetype)
+        Ctx_Data : System.Address; -- Audio context data, depends on type
     end record 
         with Convention => C_Pass_By_Copy;
 
-    -- TODO : file stuff
+    -- TODO : VrDeviceConfig
+    -- TODO : VrStereoConfig
 
-    --///////////////////////////////////////////////////////////////////////
-    -- Enumerators Definition
-    --///////////////////////////////////////////////////////////////////////
+    -- File path list
+    type File_Path_List is record 
+        Capacity : unsigned;         -- Filepaths max entrires
+        Count    : unsigned;         -- Filepaths entries count
+        Paths    : access chars_ptr; -- Filepaths entries
+    end record 
+        with Convention => C_Pass_By_Copy;
+
+    -- Automation event
+    type Automation_Event_Params is Array (0 .. 3) of int;
+    type Automation_Event is record 
+        Frame      : unsigned;                -- Event frame
+        Event_Type : unsigned;                -- Event type (Automation_Event_type)
+        Params     : Automation_Event_Params; -- Event parameters (if any)
+    end record 
+        with Convention => C_Pass_By_Copy;
+
+    -- Automation event list
+    type Automation_Event_List is record 
+        Capacity : unsigned;                -- Event max entries (MAX_AUTOMATION_EVENTS)
+        Count    : unsigned;                -- Event entries count
+        Events   : access Automation_Event; -- Event entries
+    end record 
+        with Convention => C_Pass_By_Copy;
 
     --///////////////////////////////////////////////////////////////////////
     -- Predefined color constants
@@ -331,9 +380,6 @@ package Raylib is
             with Import        => true,
                  Convention    => C,
                  External_Name => "ClearBackground";
-        --
-        -- Initializers and deinitializers for drawing modes
-        --
         -- Setup the canvas (framebuffer) to start drawing
         procedure Start
             with Import        => true,
@@ -354,6 +400,16 @@ package Raylib is
             with Import        => true, 
                  Convention    => C, 
                  External_Name => "EndMode2D";
+        -- Begin 3D mode with a custom camera (3D)
+        procedure Start_3D_Mode (Camera : Camera_3D)
+            with Import        => true,
+                 Convention    => C,
+                 External_Name => "BeginMode3D";
+        -- End 3D mode with custom camera
+        procedure Stop_3D_Mode
+            with Import        => true, 
+                 Convention    => C, 
+                 External_Name => "EndMode3D";
         -- Begin drawing to render texture
         procedure Start_Texture_Mode (Target : Render_Texture_2D) 
             with Import        => true, 
@@ -384,7 +440,9 @@ package Raylib is
             with Import        => true, 
                  Convention    => C, 
                  External_Name => "EndScissorMode";
-       
+        -- TODO : LoadVrStereoConfig
+        -- TODO : UnloadVrStereoConfig
+
         --///////////////////////////////////////////////////////////////////////
         -- Basic shapes Drawing functions (Module : shapes)
         --//////////////////////////////////////////////////////////////////////
