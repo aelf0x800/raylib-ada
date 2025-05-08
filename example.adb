@@ -5,13 +5,10 @@ procedure Example is
     use Ada.Text_IO;
 
     Rect : Raylib.Rectangle := (300.0, 300.0, 200.0, 200.0);
+    Img  : Raylib.Image     := Raylib.Textures.Load_Image ("test.jpg");
 begin
     Raylib.Window.Init (640, 480, "Hello wrodl!");
     Raylib.Timing.Set_Target_FPS (60);
-
-    if Raylib.Window.Is_Ready then
-        Put_Line ("Window is ready!");
-    end if;
 
     while not Raylib.Window.Should_Close loop
         Put_Line ("FPS : " & Raylib.Timing.Get_FPS'Img);
@@ -24,5 +21,6 @@ begin
         Raylib.Drawing.Stop;
     end loop;
     
+    Raylib.Textures.Unload_Image (Img);
     Raylib.Window.Close;
 end Example; 
