@@ -35,33 +35,33 @@ package Raylib is
     --/////////////////////////////////////////////////////////////////////////////
     -- Structures Definition
     --/////////////////////////////////////////////////////////////////////////////
-    -- Vector_2, 2 components
-    type Vector_2 is record
+    -- Vector2, 2 components
+    type Vector2 is record
         X, Y : Float; -- Vector X and Y components
     end record
         with Convention => C_Pass_By_Copy;
 
-    -- Vector_3, 3 components
-    type Vector_3 is record
+    -- Vector3, 3 components
+    type Vector3 is record
         X, Y, Z : Float; -- Vector X, Y and Z components
     end record
         with Convention => C_Pass_By_Copy;
 
-    -- Vector_4, 4 components
-    type Vector_4 is record
+    -- Vector4, 4 components
+    type Vector4 is record
         X, Y, Z, W : Float; -- Vector X, Y, Z and W components
     end record
         with Convention => C_Pass_By_Copy;
 
-    -- Quaternion, 4 components (Vector_4 alias)
-    type Quaternion is new Vector_4;
+    -- Quaternion, 4 components (Vector4 alias)
+    type Quaternion is new Vector4;
 
     -- Matrix, 4x4 components, column major, OpenGL style, right-handed
     type Matrix is record
-        M_0, M_4, M_8, M_12  : Float; -- Matrix first row (4 components)
-        M_1, M_5, M_9, M_13  : Float; -- Matrix second row (4 components)
-        M_2, M_6, M_10, M_14 : Float; -- Matrix third row (4 conponents)
-        M_3, M_7, M_11, M_15 : Float; -- Matrix fourth row (4 conponents)
+        M0, M4, M8, M12  : Float; -- Matrix first row (4 components)
+        M1, M5, M9, M13  : Float; -- Matrix second row (4 components)
+        M2, M6, M10, M14 : Float; -- Matrix third row (4 conponents)
+        M3, M7, M11, M15 : Float; -- Matrix fourth row (4 conponents)
     end record
         with Convention => C_Pass_By_Copy;
 
@@ -132,11 +132,11 @@ package Raylib is
     end record
         with Convention => C_Pass_By_Copy;
 
-    -- Camera_3D, defines position and orientation in 3D space
-    type Camera_3D is record
-        Position   : Vector_3; -- Camera position
-        Target     : Vector_3; -- Camera target it looks-at
-        Up         : Vector_3; -- Camera up vector (rotation over its axis)
+    -- Camera3D, defines position and orientation in 3D space
+    type Camera3D is record
+        Position   : Vector3; -- Camera position
+        Target     : Vector3; -- Camera target it looks-at
+        Up         : Vector3; -- Camera up vector (rotation over its axis)
         Fov_Y      : Float;    -- Camera field-of-view aperture in Y (degrees) in perspective, used as near plane width in orthohtaphic
         Projection : int;      -- Camera projection : CameraProjection.Perspective or CameraProjection.Orthographic
     end record
@@ -144,8 +144,8 @@ package Raylib is
 
     -- Camera_2D, defines position and orientation in 2D space
     type Camera_2D is record
-        Offset   : Vector_2; -- Camera offset (displacement from target)
-        Target   : Vector_2; -- Camera target (rotation and zoom origin)
+        Offset   : Vector2; -- Camera offset (displacement from target)
+        Target   : Vector2; -- Camera target (rotation and zoom origin)
         Rotation : Float;    -- Camera rotation in degrees
         Zoom     : Float;    -- Camera zoom (scaling), should be 1.0f by default
     end record
@@ -159,7 +159,7 @@ package Raylib is
         -- Vertex attributes data
         Verticies        : access Float;         -- Vertex position (XYZ - 3 components per vertex) (shader-location = 0)
         Texture_Coords   : access Float;         -- Vertex texture coordinates (UV - 2 components per vertex (shader-location = 1)
-        Texture_Coords_2 : access Float;         -- Vertex texture second coordinates (UV - 2 components per vertex) (shader-location = 5)
+        Texture_Coords2 : access Float;         -- Vertex texture second coordinates (UV - 2 components per vertex) (shader-location = 5)
         Normals          : access Float;         -- Vertex normals (XYZ - 3 components per vertex) (shader-location = 2)
         Tangents         : access Float;         -- Vertex tangents (XYZW - 4 components per vertex) (shader-location = 3)
         Colors           : access unsigned_char; -- Vertex colors (RGBA - 4 components per vertex) (shader-location = 3)
@@ -205,9 +205,9 @@ package Raylib is
 
     -- Transform, vertex transformation data
     type Transform is record
-        Translation : Vector_3;   -- Translation
+        Translation : Vector3;   -- Translation
         Rotation    : Quaternion; -- Rotation
-        Scale       : Vector_3;   -- Scale
+        Scale       : Vector3;   -- Scale
     end record 
         with Convention => C_Pass_By_Copy;
 
@@ -248,8 +248,8 @@ package Raylib is
 
     -- Ray, ray for raycasting
     type Ray is record 
-        Position  : Vector_3; -- Ray position (origin)
-        Direction : Vector_3; -- Ray direction (normalized)
+        Position  : Vector3; -- Ray position (origin)
+        Direction : Vector3; -- Ray direction (normalized)
     end record 
         with Convention => C_Pass_By_Copy;
 
@@ -257,8 +257,8 @@ package Raylib is
 
     -- Bounding_Box
     type Bounding_Box is record 
-        Min : Vector_3; -- Minimum vertex box-corner
-        Max : Vector_3; -- Maximum vertex box-corner
+        Min : Vector3; -- Minimum vertex box-corner
+        Max : Vector3; -- Maximum vertex box-corner
     end record 
         with Convention => C_Pass_By_Copy;
 
@@ -370,6 +370,198 @@ package Raylib is
                  External_Name => "CloseWindow";
         -- Check if application should close (KEY_ESCAPE pressed or windows close icon clicked)
         function Should_Close return Boolean;
+        -- Check if window has been initialized successfully
+        function Is_Ready return Boolean;
+        -- Check if window is currently fullscreen
+        function Is_Fullscreen return Boolean;
+        -- Check if window is currently hidden
+        function Is_Hidden return Boolean;
+        -- Check if window is currently minimized
+        function Is_Minimized return Boolean;
+        -- Check if window is currently maximized
+        function Is_Maximized return Boolean;
+        -- Check if window is currently focused
+        function Is_Focused return Boolean;
+        -- Check if window has been resized last frame
+        function Is_Resized return Boolean;
+        -- Check if one specific window flag is enabled
+        function Is_State (Flag : unsigned) return Boolean;
+        -- Set window configuration state using flags
+        procedure Set_State (Flags : unsigned) 
+            with Import        => true, 
+                 Convention    => C, 
+                 External_Name => "SetWindowState";
+        -- Clear window configuration state flags
+        procedure Clear_State (Flags : unsigned) 
+            with Import        => true, 
+                 Convention    => C, 
+                 External_Name => "ClearWindowState";
+        -- Toggle window state: fullscreen/windowed, resizes monitor to match window resolution
+        procedure Toggle_Fullscreen 
+            with Import        => true, 
+                 Convention    => C, 
+                 External_Name => "ToggleFullscreen";
+        -- Toggle window state: borderless windowed, resizes window to match monitor resolution
+        procedure Toggle_Borderless_Windowed 
+            with Import        => true, 
+                 Convention    => C, 
+                 External_Name => "ToggleBorderlessWindowed";
+        -- Set window state: maximized, if resizable
+        procedure Maximize 
+            with Import        => true, 
+                 Convention    => C, 
+                 External_Name => "MaximiseWindow";
+        -- Set window state: minimized, if resizable
+        procedure Minimize 
+            with Import        => true, 
+                 Convention    => C, 
+                 External_Name => "MinimizeWindow";
+        -- Set window state: not minimized/maximized
+        procedure Restore 
+            with Import        => true, 
+                 Convention    => C, 
+                 External_Name => "RestoreWindow";
+        -- Set icon for window (single image, RGBA 32bit)
+        procedure Set_Icon (Img : Image) 
+            with Import        => true, 
+                 Convention    => C, 
+                 External_Name => "SetWindowIcon";
+        -- Set icon for window (multiple images, RGBA 32bit)
+        procedure Set_Icons (Imgs : access Image; Count : int) 
+            with Import        => true, 
+                 Convention    => C, 
+                 External_Name => "SetWindowIcons";
+        -- Set title for window
+        procedure Set_Title (Title : String);
+        -- Set window position on screen
+        procedure Set_Position (X, Y : int)
+            with Import        => true, 
+                 Convention    => C, 
+                 External_Name => "SetWindowPosition";
+        -- Set monitor for the current window
+        procedure Set_Monitor (Monitor : int) 
+            with Import        => true, 
+                 Convention    => C, 
+                 External_Name => "SetWindowMonitor";
+        -- Set window minimum dimensions (for FLAG_WINDOW_RESIZABLE)
+        procedure Set_Min_Size (Width, Height : int) 
+            with Import        => true, 
+                 Convention    => C, 
+                 External_Name => "SetWindowMinSize";
+        -- Set window maximum dimensions (for FLAG_WINDOW_RESIZABLE)
+        procedure Set_Max_Size (Width, Height : int) 
+            with Import        => true, 
+                 Convention    => C, 
+                 External_Name => "SetWindowMaxSize";
+        -- Set window dimensions
+        procedure Set_Size (Width, Height : int) 
+            with Import        => true, 
+                 Convention    => C, 
+                 External_Name => "SetWindowSize";
+        -- Set window opacity [0.0f..1.0f]
+        procedure Set_Opacity (Opacity : float) 
+            with Import        => true, 
+                 Convention    => C, 
+                 External_Name => "SetWindowOpacity";
+        -- Set window focused
+        procedure Set_Focused 
+            with Import        => true, 
+                 Convention    => C, 
+                 External_Name => "SetWindowFocused";
+        -- Get native window handle
+        function Get_Handle return System.Address
+            with Import        => true,
+                 Convention    => C,
+                 External_Name => "GetWindowHandle";
+        -- Get current screen width
+        function Get_Screen_Width return int 
+            with Import        => true, 
+                 Convention    => C, 
+                 External_Name => "GetScreenWidth";
+        -- Get current screen height
+        function Get_Screen_Height return int 
+            with Import        => true, 
+                 Convention    => C, 
+                 External_Name => "GetScreenHeight";
+        -- Get current render width (it considers HiDPI)
+        function Get_Render_Width return int 
+            with Import        => true, 
+                 Convention    => C, 
+                 External_Name => "GetRenderWidth";
+        -- Get current render height (it considers HiDPI)
+        function Get_Render_Height return int 
+            with Import        => true,
+                 Convention    => C, 
+                 External_Name => "GetRenderWidth";
+        -- Get number of connected monitors
+        function Get_Monitor_Count return int 
+            with Import        => true, 
+                 Convention    => C, 
+                 External_Name => "GetMonitorCount";
+        -- Get current monitor where window is placed
+        function Get_Current_Monitor return int 
+            with Import        => true, 
+                 Convention    => C, 
+                 External_Name => "GetCurrentMonitor";
+        -- Get specified monitor position  
+        function Get_Monitor_Position(Monitor : int) return Vector2
+            with Import        => true,
+                 Convention    => C,
+                 External_Name => "GetMonitiorPosition";
+        -- Get specified monitor width (current video mode used by monitor)
+        function Get_Monitor_Width (Monitor : int) return int 
+            with Import        => true, 
+                 Convention    => C, 
+                 External_Name => "GetMonitorWidth";
+        -- Get specified monitor height (current video mode used by monitor) return int
+        function Get_Monitor_Height (Monitor : int) return int 
+            with Import        => true, 
+                 Convention    => C, 
+                 External_Name => "GetMonitorHeight";
+        -- Get specified monitor physical width in millimetres
+        function Get_Monitor_Physical_Width (Monitor : int) return int 
+            with Import        => true, 
+                 Convention    => C, 
+                 External_Name => "GetMonitorPhysicalWidth";
+        -- Get specified monitor physical height in millimetres
+        function Get_Monitor_Physical_Height (Monitor : int) return int 
+            with Import        => true, 
+                 Convention    => C, 
+                 External_Name => "GetMonitorPhysicalHeight";
+        -- Get specified monitor refresh rate
+        function Get_Monitor_Refresh_Rate (Monitor : int) return int 
+            with Import        => true, 
+                 Convention    => C, 
+                 External_Name => "GetMonitorRefreshRate";
+        -- Get window position XY on monitor
+        function Get_Position return Vector2 
+            with Import        => true, 
+                 Convention    => C, 
+                 External_Name => "GetWindowPosition";
+        -- Get window scale DPI factor
+        function Get_Scale_DPI return Vector2 
+            with Import        => true, 
+                 Convention    => C, 
+                 External_Name => "GetWindowScaleDPI";
+        -- TODO : const char *GetMonitorName(int monitor);                    // Get the human-readable, UTF-8 encoded name of the specified monitor
+        -- Set clipboard text content
+        procedure Set_Clipboard_Text(Text : String);
+        -- TODO : const char *GetClipboardText(void);                         // Get clipboard text content
+        -- Get clipboard image content
+        function Get_Clipboard_Image return Image
+            with Import        => true,
+                 Convention    => C,
+                 External_Name => "GetClipboardImage";
+        -- Enable waiting for events on EndDrawing(), no automatic event polling
+        procedure Enable_Event_Waiting 
+            with Import => true,
+                 Convention => C,
+                 External_Name => "EnableEventWaiting";
+        -- Disable waiting for events on EndDrawing(), automatic events polling
+        procedure Disable_Event_Waiting 
+            with Import => true,
+                 Convention => C,
+                 External_Name => "DisableEventWaiting";
     end Window;
 
     package Drawing is
@@ -398,7 +590,7 @@ package Raylib is
                  Convention    => C, 
                  External_Name => "EndMode2D";
         -- Begin 3D mode with a custom camera (3D)
-        procedure Start_3D_Mode (Camera : Camera_3D)
+        procedure Start_3D_Mode (Camera : Camera3D)
             with Import        => true,
                  Convention    => C,
                  External_Name => "BeginMode3D";
@@ -449,7 +641,7 @@ package Raylib is
                  Convention    => C,
                  External_Name => "DrawPixel";
         -- Draw a pixel using geometry (Vector version) (Can be slow, use with care)
-        procedure Draw_Pixel_V (V : Vector_2; C : Color)
+        procedure Draw_Pixel_V (V : Vector2; C : Color)
             with Import        => true,
                  Convention    => C,
                  External_Name => "Draw_Pixel_V";
@@ -459,22 +651,22 @@ package Raylib is
                  Convention    => C,
                  External_Name => "DrawLine";
         -- Draw a line (using GL lines)
-        procedure Draw_Line_V (Start_Pos, End_Pos : Vector_2; C : Color)
+        procedure Draw_Line_V (Start_Pos, End_Pos : Vector2; C : Color)
             with Import        => true,
                  Convention    => C,
                  External_Name => "DrawLineV";
         -- Draw a line (using triangles/quads)
-        procedure Draw_Line_Ex (Start_Pos, End_Pos : Vector_2; Thick : Float; C : Color)
+        procedure Draw_Line_Ex (Start_Pos, End_Pos : Vector2; Thick : Float; C : Color)
             with Import        => true,
                  Convention    => C,
                  External_Name => "DrawLineEx";
         -- Draw lines sequence (using GL lines)
-        procedure Draw_Line_Strip (Points : access Vector_2; Point_Count : int; C : Color)
+        procedure Draw_Line_Strip (Points : access Vector2; Point_Count : int; C : Color)
             with Import        => true,
                  Convention    => C,
                  External_Name => "DrawLineStrip";
         -- Draw a line segment cubic-bezier in-out interpolation
-        procedure Draw_Line_Bezier (Start_Pos, End_Pos : Vector_2; Thick : Float; C : Color)
+        procedure Draw_Line_Bezier (Start_Pos, End_Pos : Vector2; Thick : Float; C : Color)
             with Import        => true,
                  Convention    => C,
                  External_Name => "DrawLineBezier";
@@ -484,12 +676,12 @@ package Raylib is
                  Convention    => C, 
                  External_Name => "DrawCircle";
         -- Draw a piece of a circle
-        procedure Draw_Circle_Sector (Center : Vector_2; Radius, Start_Angle, End_Angle : Float; Segments : int; C : Color) 
+        procedure Draw_Circle_Sector (Center : Vector2; Radius, Start_Angle, End_Angle : Float; Segments : int; C : Color) 
             with Import        => true, 
                  Convention    => C, 
                  External_Name => "DrawCircleSector";
         -- Draw circle sector outline
-        procedure Draw_Circle_Sector_Lines (Center : Vector_2; Radius, Start_Angle, End_Angle : Float; Segments : int; C : Color) 
+        procedure Draw_Circle_Sector_Lines (Center : Vector2; Radius, Start_Angle, End_Angle : Float; Segments : int; C : Color) 
             with Import        => true, 
                  Convention    => C, 
                  External_Name => "DrawCircleSectorLines";
@@ -499,7 +691,7 @@ package Raylib is
                  Convention    => C, 
                  External_Name => "DrawCircleGradient";
         -- Draw color-filled circle (Vector version)
-        procedure Draw_Circle_V (Center : Vector_2; Radius : Float; C : Color)
+        procedure Draw_Circle_V (Center : Vector2; Radius : Float; C : Color)
             with Import        => true, 
                  Convention    => C, 
                  External_Name => "DrawCircleV";
@@ -509,7 +701,7 @@ package Raylib is
                  Convention    => C, 
                  External_Name => "DrawCircleLines";
         -- Draw circle outline (Vector version)
-        procedure Draw_Circle_Lines_V (Center : Vector_2; Radius : Float; C : Color) 
+        procedure Draw_Circle_Lines_V (Center : Vector2; Radius : Float; C : Color) 
             with Import        => true, 
                  Convention    => C, 
                  External_Name => "DrawCircleLinesV";
@@ -524,12 +716,12 @@ package Raylib is
                  Convention    => C, 
                  External_Name => "DrawEllipseLines";
         -- Draw ring
-        procedure Draw_Ring (Center : Vector_2; Inner_Radius, Outer_Radius, Start_Angle, End_Angle : Float; Segments : int; C : Color) 
+        procedure Draw_Ring (Center : Vector2; Inner_Radius, Outer_Radius, Start_Angle, End_Angle : Float; Segments : int; C : Color) 
             with Import        => true, 
                  Convention    => C, 
                  External_Name => "DrawRing";
         -- Draw ring outline
-        procedure Draw_Ring_Lines (Center : Vector_2; Inner_Radius, Outer_Radius, Start_Angle, End_Angle : Float; Segments : int; C : Color) 
+        procedure Draw_Ring_Lines (Center : Vector2; Inner_Radius, Outer_Radius, Start_Angle, End_Angle : Float; Segments : int; C : Color) 
             with Import        => true, 
                  Convention    => C, 
                  External_Name => "DrawRingLines";
@@ -539,7 +731,7 @@ package Raylib is
                  Convention    => C, 
                  External_Name => "DrawRectangle";
         -- Draw a color-filled rectangle (Vector version)
-        procedure Draw_Rectangle_V (Position, Size : Vector_2; C : Color) 
+        procedure Draw_Rectangle_V (Position, Size : Vector2; C : Color) 
             with Import        => true, 
                  Convention    => C, 
                  External_Name => "DrawRectangleV";
@@ -549,7 +741,7 @@ package Raylib is
                  Convention    => C, 
                  External_Name => "DrawRectangleRec";
         -- Draw a color-filled rectangle with pro parameters
-        procedure Draw_Rectangle_Pro (Rec : Rectangle; Origin : Vector_2; Rotation : Float; C : Color) 
+        procedure Draw_Rectangle_Pro (Rec : Rectangle; Origin : Vector2; Rotation : Float; C : Color) 
             with Import        => true, 
                  Convention    => C, 
                  External_Name => "DrawRectanglePro";
@@ -594,37 +786,37 @@ package Raylib is
                  Convention    => C, 
                  External_Name => "DrawRectangleRoundedLinesEx";
         -- Draw a color-filled triangle (vertex in counter-clockwise order!)
-        procedure Draw_Triangle (V_1, V_2, V_3 : Vector_2; C : Color) 
+        procedure Draw_Triangle (V1, V2, V3 : Vector2; C : Color) 
             with Import        => true, 
                  Convention    => C, 
                  External_Name => "DrawTriangle";
         -- Draw triangle outline (vertex in counter-clockwise order!)
-        procedure Draw_Triangle_Lines (V_1, V_2, V_3 : Vector_2; C : Color) 
+        procedure Draw_Triangle_Lines (V1, V2, V3 : Vector2; C : Color) 
             with Import        => true, 
                  Convention    => C, 
                  External_Name => "DrawTriangleLines";
         -- Draw a triangle fan defined by points (first vertex is the center)
-        procedure Draw_Triangle_Fan (Points : access Vector_2; Point_Count : int; C : Color) 
+        procedure Draw_Triangle_Fan (Points : access Vector2; Point_Count : int; C : Color) 
             with Import        => true, 
                  Convention    => C, 
                  External_Name => "DrawTriangleFan";
         -- Draw a triangle strip defined by points
-        procedure Draw_Triangle_Strip (Points : access Vector_2; Point_Count : int; C : Color) 
+        procedure Draw_Triangle_Strip (Points : access Vector2; Point_Count : int; C : Color) 
             with Import        => true, 
                  Convention    => C, 
                  External_Name => "DrawTriangleStrip";
         -- Draw a regular polygon (Vector version)
-        procedure Draw_Poly (Center : Vector_2; Sides : int; Radius, Rotation : Float; C : Color) 
+        procedure Draw_Poly (Center : Vector2; Sides : int; Radius, Rotation : Float; C : Color) 
             with Import        => true, 
                  Convention    => C, 
                  External_Name => "DrawPoly";
         -- Draw a polygon outline of n sides
-        procedure Draw_Poly_Lines (Center : Vector_2; Sides : int; Radius, Rotation : Float; C : Color) 
+        procedure Draw_Poly_Lines (Center : Vector2; Sides : int; Radius, Rotation : Float; C : Color) 
             with Import        => true,
                  Convention    => C, 
                  External_Name => "DrawPolyLines";
         -- Draw a polygon outline of n sides with extended parameters
-        procedure Draw_Poly_Lines_Ex (Center : Vector_2; Sides : int; Radius, Rotation, Line_Thick : Float; C : Color) 
+        procedure Draw_Poly_Lines_Ex (Center : Vector2; Sides : int; Radius, Rotation, Line_Thick : Float; C : Color) 
             with Import        => true, 
                  Convention    => C, 
                  External_Name => "DrawPolyLinesEx";
@@ -633,27 +825,27 @@ package Raylib is
         -- Spline segment point evaluation functions, for a given t [0.0f .. 1.0f]
         --/////////////////////////////////////////////////////////////////////////////
         -- Get (evaluate) spline point: Linear
-        function Get_Spline_Point_Linear (Start_Pos, End_Pos : Vector_2; T : Float) return Vector_2 
+        function Get_Spline_Point_Linear (Start_Pos, End_Pos : Vector2; T : Float) return Vector2 
             with Import        => true, 
                  Convention    => C, 
                  External_Name => "GetSplinePointLinear";
         -- Get (evaluate) spline point: B-Spline
-        function Get_Spline_Point_Basis (P_1, P_2, P_3, P_4 : Vector_2; T : Float) return Vector_2 
+        function Get_Spline_Point_Basis (P1, P2, P3, P4 : Vector2; T : Float) return Vector2 
             with Import        => true, 
                  Convention    => C, 
                  External_Name => "GetSplinePointBasis";
         -- Get (evaluate) spline point: Catmull-Rom
-        function Get_Spline_Point_Catmull_Rom (P_1, P_2, P_3, P_4 : Vector_2; T : Float) return Vector_2 
+        function Get_Spline_Point_Catmull_Rom (P1, P2, P3, P4 : Vector2; T : Float) return Vector2 
             with Import        => true, 
                  Convention    => C, 
                  External_Name => "GetSplinePointCatmullRom";
         -- Get (evaluate) spline point: Quadratic Bezier
-        function Get_Spline_Point_Bezier_Quad (P_1, C_2, P_3 : Vector_2; T : Float) return Vector_2 
+        function Get_Spline_Point_Bezier_Quad (P1, C2, P3 : Vector2; T : Float) return Vector2 
             with Import        => true, 
                  Convention    => C, 
                  External_Name => "GetSplinePointBezierQuad";
         -- Get (evaluate) spline point: Cubic Bezier
-        function Get_Spline_Point_Bezier_Cubic (P_1, C_2, C_3, P_4 : Vector_2; T : Float) return Vector_2 
+        function Get_Spline_Point_Bezier_Cubic (P1, C2, C3, P4 : Vector2; T : Float) return Vector2 
             with Import        => true, 
                  Convention    => C, 
                  External_Name => "GetSplinePointBezierCubic";
@@ -685,13 +877,15 @@ package Raylib is
         function Load_Image_Raw (File_Name : String; Width, Height, Format, Header_Size : int) return Image;
         -- Load image sequence from file (frames appended to image.data)
         function Load_Image_Anim (File_Name : String; Frames : access int) return Image;
-        -- TODO : function Load_Image_Anim_From_Memory (const char *fileType, const unsigned char *fileData, int dataSize, int *frames); // Load image sequence from memory buffer
-        -- TODO : function Load_Image_From_Memory (File_Type : String; const unsigned char *fileData, int dataSize);      // Load image from memory buffer, fileType refers to extension: i.e. '.png'
+        -- Load image sequence from memory buffer        
+        function Load_Image_Anim_From_Memory (File_Type : String; File_Data : access unsigned_char; Data_Size : int; Frames : access int) return Image; 
+        -- Load image from memory buffer, fileType refers to extension: i.e. '.png'
+        function Load_Image_From_Memory (File_Type : String; File_Data : access unsigned_char; Data_Size : int) return Image;
         -- Load image from GPU texture data
         function Load_Image_From_Texture_2D(Texture : Texture_2D) return Image
             with Import        => true,
                  Convention    => C,
-                 External_Name => "LoadImageFromTexture";                                                     // Load image from GPU texture data
+                 External_Name => "LoadImageFromTexture";
         -- Load image from screen buffer and (screenshot)
         function Load_Image_From_Screen return Image
             with Import        => true,
@@ -791,33 +985,73 @@ package Raylib is
         -- Texture loading functions
         -- NOTE: These functions require GPU access
         --/////////////////////////////////////////////////////////////////////////////
-        -- TODO : Texture2D LoadTexture(const char *fileName);                                                       // Load texture from file into GPU memory (VRAM)
-        -- TODO : Texture2D LoadTextureFromImage(Image image);                                                       // Load texture from image data
+        -- TODO : Texture_2D LoadTexture(const char *fileName);                                                       // Load texture from file into GPU memory (VRAM)
+        -- Load texture from image data
+        function Load_Texture_2D_From_Image(Img : Image) return Texture_2D
+            with Import        => true,
+                 Convention    => C,
+                 External_Name => "LoadTextureFromImage";
         -- TODO : TextureCubemap LoadTextureCubemap(Image image, int layout);                                        // Load cubemap from image, multiple image cubemap layouts supported
-        -- TODO : RenderTexture2D LoadRenderTexture(int width, int height);                                          // Load texture for rendering (framebuffer)
-        -- TODO : bool IsTextureValid(Texture2D texture);                                                            // Check if a texture is valid (loaded in GPU)
-        -- TODO : void UnloadTexture(Texture2D texture);                                                             // Unload texture from GPU memory (VRAM)
-        -- TODO : bool IsRenderTextureValid(RenderTexture2D target);                                                 // Check if a render texture is valid (loaded in GPU)
-        -- TODO : void UnloadRenderTexture(RenderTexture2D target);                                                  // Unload render texture from GPU memory (VRAM)
-        -- TODO : void UpdateTexture(Texture2D texture, const void *pixels);                                         // Update GPU texture with new data
-        -- TODO : void UpdateTextureRec(Texture2D texture, Rectangle rec, const void *pixels);                       // Update GPU texture rectangle with new data
+        -- TODO : RenderTexture_2D LoadRenderTexture(int width, int height);                                          // Load texture for rendering (framebuffer)
+        -- TODO : bool IsTextureValid(Texture_2D texture);                                                            // Check if a texture is valid (loaded in GPU)
+        -- TODO : void UnloadTexture(Texture_2D texture);                                                             // Unload texture from GPU memory (VRAM)
+        -- TODO : bool IsRenderTextureValid(RenderTexture_2D target);                                                 // Check if a render texture is valid (loaded in GPU)
+        -- TODO : void UnloadRenderTexture(RenderTexture_2D target);                                                  // Unload render texture from GPU memory (VRAM)
+        -- TODO : void UpdateTexture(Texture_2D texture, const void *pixels);                                         // Update GPU texture with new data
+        -- TODO : void UpdateTextureRec(Texture_2D texture, Rectangle rec, const void *pixels);                       // Update GPU texture rectangle with new data
 
         --/////////////////////////////////////////////////////////////////////////////
         -- Texture configuration functions
         --/////////////////////////////////////////////////////////////////////////////
-        -- TODO : void GenTextureMipmaps(Texture2D *texture);                                                        // Generate GPU mipmaps for a texture
-        -- TODO : void SetTextureFilter(Texture2D texture, int filter);                                              // Set texture scaling filter mode
-        -- TODO : void SetTextureWrap(Texture2D texture, int wrap);                                                  // Set texture wrapping mode
+        -- Generate GPU mipmaps for a texture
+        procedure Gen_Texture_Mipmaps (Texture : access Texture_2D) 
+            with Import        => true, 
+                 Convention    => C,
+                 External_Name => "GenTextureMipmaps";
+        -- Set texture scaling filter mode
+        procedure Set_Texture_Filter (Texture : Texture_2D; Filter : int) 
+            with Import        => true, 
+                 Convention    => C, 
+                 External_Name => "SetTextureFilter";
+        -- Set texture wrapping mode
+        procedure Set_Texture_Wrap (Texture : Texture_2D; Wrap : int) 
+            with Import        => true, 
+                 Convention    => C, 
+                 External_Name => "SetTextureWrap";
 
         --/////////////////////////////////////////////////////////////////////////////
         -- Texture drawing functions
         --/////////////////////////////////////////////////////////////////////////////
-        -- TODO : void DrawTexture(Texture2D texture, int posX, int posY, Color tint);                               // Draw a Texture2D
-        -- TODO : void DrawTextureV(Texture2D texture, Vector2 position, Color tint);                                // Draw a Texture2D with position defined as Vector2
-        -- TODO : void DrawTextureEx(Texture2D texture, Vector2 position, float rotation, float scale, Color tint);  // Draw a Texture2D with extended parameters
-        -- TODO : void DrawTextureRec(Texture2D texture, Rectangle source, Vector2 position, Color tint);            // Draw a part of a texture defined by a rectangle
-        -- TODO : void DrawTexturePro(Texture2D texture, Rectangle source, Rectangle dest, Vector2 origin, float rotation, Color tint); // Draw a part of a texture defined by a rectangle with 'pro' parameters
-        -- TODO : void DrawTextureNPatch(Texture2D texture, NPatchInfo nPatchInfo, Rectangle dest, Vector2 origin, float rotation, Color tint); // Draws a texture (or part of it) that stretches or shrinks nicely
+        -- Draw a Texture_2D
+        procedure Draw_Texture (Texture : Texture_2D; Pos_X, Pos_Y : int; Tint : Color) 
+            with Import        => True, 
+                 Convention    => C, 
+                 External_Name => "DrawTexture";
+        -- Draw a Texture_2D with position defined as Vector2
+        procedure Draw_Texture_V (Texture : Texture_2D; Position : Vector2; Tint : Color) 
+            with Import        => True, 
+                 Convention    => C, 
+                 External_Name => "DrawTextureV";
+        -- Draw a Texture_2D with extended parameters
+        procedure Draw_Texture_Ex (Texture : Texture_2D; Position : Vector2; Rotation, Scale : Float; Tint : Color) 
+            with Import        => True, 
+                 Convention    => C, 
+                 External_Name => "DrawTextureEx";
+        -- Draw a part of a texture defined by a rectangle
+        procedure Draw_Texture_Rec (Texture : Texture_2D; Source : Rectangle; Position : Vector2; Tint : Color) 
+            with Import        => True, 
+                 Convention    => C, 
+                 External_Name => "DrawTextureRec";
+        -- Draw a part of a texture defined by a rectangle with 'pro' parameters
+        procedure Draw_Texture_Pro (Texture : Texture_2D; Source, Dest : Rectangle; Origin : Vector2; Rotation : Float; Tint : Color) 
+            with Import        => True, 
+                 Convention    => C, 
+                 External_Name => "DrawTexturePro";
+        -- Draws a texture (or part of it) that stretches or shrinks nicely
+        procedure Draw_Texture_NPatch (Texture : Texture_2D; Info : NPatch_Info; Dest : Rectangle; Origin : Vector2; Rotation : Float; Tint : Color) 
+            with Import        => True, 
+                 Convention    => C, 
+                 External_Name => "DrawTextureNPatch";
 
         --/////////////////////////////////////////////////////////////////////////////
         -- Color/pixel related functions
