@@ -1,0 +1,9 @@
+name = "raylib_ada"
+description = "Raylib bindings for the Ada programming language"
+version = "5.5"
+
+authors = ["aelf0x800"]
+maintainers = ["aelf0x800 <199596498+aelf0x800@users.noreply.github.com>"]
+licenses = "MIT"
+website = "https://github.com/aelf0x800/raylib-ada"
+tags = []

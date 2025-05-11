@@ -25,32 +25,119 @@ package Raylib is
    type Keyboard_Key is
       (Key_Nul,
        -- Android key buttons
-       Key_Back, Key_Menu, Key_Volume_Up, Key_Volume_Down,
+       Key_Back,
+       Key_Menu,
+       Key_Volume_Up,
+       Key_Volume_Down,
        -- Space key
        Key_Space,
        -- Alphanumeric keys
-       Key_Apostrophe, Key_Comma, Key_Minus, Key_Period, Key_Slash, Key_Zero, 
-       Key_One, Key_Two, Key_Three, Key_Four, Key_Five, Key_Six, Key_Seven, 
-       Key_Eight, Key_Nine, Key_Semi_Colon, Key_Equal, Key_A, Key_B, Key_C, 
-       Key_D, Key_E, Key_F, Key_G, Key_H, Key_I, Key_J, Key_K, Key_L, Key_M, 
-       Key_N, Key_O, Key_P, Key_Q, Key_R, Key_S, Key_T, Key_U, Key_V, Key_W, 
-       Key_X, Key_Y, Key_Z, Key_Left_Bracket, Key_Backslash, Key_Right_Bracket,
+       Key_Apostrophe,
+       Key_Comma,
+       Key_Minus,
+       Key_Period,
+       Key_Slash,
+       Key_Zero,
+       Key_One,
+       Key_Two,
+       Key_Three,
+       Key_Four,
+       Key_Five,
+       Key_Six,
+       Key_Seven,
+       Key_Eight,
+       Key_Nine,
+       Key_Semi_Colon,
+       Key_Equal,
+       Key_A,
+       Key_B,
+       Key_C,
+       Key_D,
+       Key_E,
+       Key_F,
+       Key_G,
+       Key_H,
+       Key_I,
+       Key_J,
+       Key_K,
+       Key_L,
+       Key_M,
+       Key_N,
+       Key_O,
+       Key_P,
+       Key_Q,
+       Key_R,
+       Key_S,
+       Key_T,
+       Key_U,
+       Key_V,
+       Key_W,
+       Key_X,
+       Key_Y,
+       Key_Z,
+       Key_Left_Bracket,
+       Key_Backslash,
+       Key_Right_Bracket,
        Key_Grave,
        -- Function keys
-       Key_Escape, Key_Enter, Key_Tab, Key_Backspace, Key_Insert, Key_Delete, 
-       Key_Right, Key_Left, Key_Down, Key_Up, Key_Page_Up, Key_Page_Down, 
-       Key_Home_Key, Key_End_Key, Key_Caps_Lock, Key_Scroll_Lock, Key_Num_Lock, 
-       Key_Print_Screen, Key_Pause, Key_F1, Key_F2, Key_F3, Key_F4, Key_F5, 
-       Key_F6, Key_F7, Key_F8, Key_F9, Key_F10, Key_F11, Key_F12, 
+       Key_Escape,
+       Key_Enter,
+       Key_Tab,
+       Key_Backspace,
+       Key_Insert,
+       Key_Delete,
+       Key_Right,
+       Key_Left,
+       Key_Down,
+       Key_Up,
+       Key_Page_Up,
+       Key_Page_Down,
+       Key_Home_Key,
+       Key_End_Key,
+       Key_Caps_Lock,
+       Key_Scroll_Lock,
+       Key_Num_Lock,
+       Key_Print_Screen,
+       Key_Pause,
+       Key_F1,
+       Key_F2,
+       Key_F3,
+       Key_F4,
+       Key_F5,
+       Key_F6,
+       Key_F7,
+       Key_F8,
+       Key_F9,
+       Key_F10,
+       Key_F11,
+       Key_F12,
        -- Keypad keys
-       Key_Key_Pad_0, Key_Key_Pad_1, Key_Key_Pad_2, Key_Key_Pad_3, 
-       Key_Key_Pad_4, Key_Key_Pad_5, Key_Key_Pad_6, Key_Key_Pad_7, 
-       Key_Key_Pad_8, Key_Key_Pad_9, Key_Key_Pad_Decimal, Key_Key_Pad_Divide, 
-       Key_Key_Pad_Multiply, Key_Key_Pad_Subtract, Key_Key_Pad_Add,
-       Key_Key_Pad_Enter, Key_Key_Pad_Equal,
+       Key_Key_Pad_0,
+       Key_Key_Pad_1,
+       Key_Key_Pad_2,
+       Key_Key_Pad_3,
+       Key_Key_Pad_4,
+       Key_Key_Pad_5,
+       Key_Key_Pad_6,
+       Key_Key_Pad_7,
+       Key_Key_Pad_8,
+       Key_Key_Pad_9,
+       Key_Key_Pad_Decimal,
+       Key_Key_Pad_Divide,
+       Key_Key_Pad_Multiply,
+       Key_Key_Pad_Subtract,
+       Key_Key_Pad_Add,
+       Key_Key_Pad_Enter,
+       Key_Key_Pad_Equal,
        -- Modifier keys
-       Key_Left_Shift, Key_Left_Control, Key_Left_Alt, Key_Left_Super, 
-       Key_Right_Shift, Key_Right_Control, Key_Right_Alt, Key_Right_Super, 
+       Key_Left_Shift,
+       Key_Left_Control,
+       Key_Left_Alt,
+       Key_Left_Super,
+       Key_Right_Shift,
+       Key_Right_Control,
+       Key_Right_Alt,
+       Key_Right_Super,
        Key_KB_Menu) 
       with Convention => C;
    
@@ -174,58 +261,58 @@ package Raylib is
 
    -- Mouse button
    type Mouse_Button is
-      (Mouse_Button_Left,
-       Mouse_Button_Right,
+      (Mouse_Button_Left, 
+       Mouse_Button_Right, 
        Mouse_Button_Middle,
-       Mouse_Button_Side,
-       Mouse_Button_Extra,
+       Mouse_Button_Side, 
+       Mouse_Button_Extra, 
        Mouse_Button_Forward,
        Mouse_Button_Back)
       with Convention => C;
 
    -- Mouse cursor
    type Mouse_Cursor is
-      (Mouse_Cursor_Default,
-       Mouse_Cursor_Arrow,
+      (Mouse_Cursor_Default, 
+       Mouse_Cursor_Arrow, 
        Mouse_Cursor_I_Beam,
-       Mouse_Cursor_Crosshair,
+       Mouse_Cursor_Crosshair, 
        Mouse_Cursor_Pointing_Hand,
-       Mouse_Cursor_Resize_EW,
-       Mouse_Cursor_Resize_NS,
+       Mouse_Cursor_Resize_EW, 
+       Mouse_Cursor_Resize_NS, 
        Mouse_Cursor_Resize_NWSE,
-       Mouse_Cursor_Resize_NESW,
-       Mouse_Cursor_Resize_All,
+       Mouse_Cursor_Resize_NESW, 
+       Mouse_Cursor_Resize_All, 
        Mouse_Cursor_Not_Allowed)
       with Convention => C;
 
    -- Gamepad buttons
    type Gamepad_Button is
-      (Gamepad_Button_Unknown,
+      (Gamepad_Button_Unknown, 
        Gamepad_Button_Left_Face_Up,
-       Gamepad_Button_Left_Face_Right,
+       Gamepad_Button_Left_Face_Right, 
        Gamepad_Button_Left_Face_Down,
-       Gamepad_Button_Left_Face_Left,
+       Gamepad_Button_Left_Face_Left, 
        Gamepad_Button_Right_Face_Up,
-       Gamepad_Button_Right_Face_Right,
+       Gamepad_Button_Right_Face_Right, 
        Gamepad_Button_Right_Face_Down,
-       Gamepad_Button_Right_Face_Left,
+       Gamepad_Button_Right_Face_Left, 
        Gamepad_Button_Left_Trigger_1,
-       Gamepad_Button_Left_Trigger_2,
+       Gamepad_Button_Left_Trigger_2, 
        Gamepad_Button_Right_Trigger_1,
-       Gamepad_Button_Right_Trigger_2,
-       Gamepad_Button_MIDDLE_Left,
-       Gamepad_Button_MIDDLE,
-       Gamepad_Button_MIDDLE_Right,
-       Gamepad_Button_Left_Thumb,
+       Gamepad_Button_Right_Trigger_2, 
+       Gamepad_Button_Middle_Left,
+       Gamepad_Button_Middle, 
+       Gamepad_Button_Middle_Right,
+       Gamepad_Button_Left_Thumb, 
        Gamepad_Button_Right_Thumb)
       with Convention => C;
 
    -- Gamepad axis
    type Gamepad_Axis is
-      (Gamepad_Axis_Left_X,
-       Gamepad_Axis_Left_Y,
+      (Gamepad_Axis_Left_X, 
+       Gamepad_Axis_Left_Y, 
        Gamepad_Axis_Right_X,
-       Gamepad_Axis_Right_Y,
+       Gamepad_Axis_Right_Y, 
        Gamepad_Axis_Left_Trigger,
        Gamepad_Axis_Right_Trigger)
       with Convention => C;
@@ -234,7 +321,36 @@ package Raylib is
    -- TODO : ShaderLocationIndex
    -- TODO : ShaderUniformDataType
    -- TODO : ShaderAttributeDataType
-   -- TODO : PixelFormat
+   
+   -- Pixel formats
+   -- NOTE: Support depends on OpenGL version and platform
+   type Pixel_Format is
+      (Pixel_Format_Uncompressed_Grayscale, 
+       Pixel_Format_Uncompressed_Gray_Alpha, 
+       Pixel_Format_Uncompressed_R5G6B5,
+       Pixel_Format_Uncompressed_R8G8B8, 
+       Pixel_Format_Uncompressed_R5G5B5A1,
+       Pixel_Format_Uncompressed_R4G4B4A4, 
+       Pixel_Format_Uncompressed_R8G8B8A8,
+       Pixel_Format_Uncompressed_R32, 
+       Pixel_Format_Uncompressed_R32G32B32,
+       Pixel_Format_Uncompressed_R32G32B32A32, 
+       Pixel_Format_Uncompressed_R16,
+       Pixel_Format_Uncompressed_R16G16B16,
+       Pixel_Format_Uncompressed_R16G16B16A16, 
+       Pixel_Format_Compressed_DXT1_RGB,
+       Pixel_Format_Compressed_DXT1_RGBA, 
+       Pixel_Format_Compressed_DXT3_RGBA,
+       Pixel_Format_Compressed_DXT5_RGBA, 
+       Pixel_Format_Compressed_ETC1_RGB,
+       Pixel_Format_Compressed_ETC2_RGB, 
+       Pixel_Format_Compressed_ETC2_EAC_RGBA,
+       Pixel_Format_Compressed_PVRT_RGB, 
+       Pixel_Format_Compressed_PVRT_RGBA,
+       Pixel_Format_Compressed_ASTC_4x4_RGBA,
+       Pixel_Format_Compressed_ASTC_8x8_RGBA)
+      with Convention => C;
+
    -- TODO : TextureFilter
    -- TODO : TextureWrap
    -- TODO : CubemapLayout
@@ -242,9 +358,19 @@ package Raylib is
    -- TODO : BlendMode
    -- TODO : Gesture
    -- TODO : CameraMode
-   -- TODO : CameraProjection
-   -- TODO : NPatchLayout
-   
+
+   -- Camera projection
+   type Camera_Projection is 
+      (Camera_Projection_Perspective, Camera_Projection_Orthographic)
+      with Convention => C;
+
+   -- N-patch layout
+   type NPatch_Layout is 
+      (NPatch_Nine_Patch, 
+       NPatch_Three_Patch_Vertical, 
+       NPatch_Three_Patch_Horizontal)
+      with Convention => C;
+
    --//////////////////////////////////////////////////////////////////////////
    -- Structures Definition
    --//////////////////////////////////////////////////////////////////////////
@@ -296,16 +422,16 @@ package Raylib is
       Data          : System.Address; -- Image raw data
       Width, Height : int;            -- Image base width and height
       Mipmaps       : int;            -- Mipmap levels, 1 by default
-      Format        : int;            -- Data format (PixelFormat type)
+      Format        : Pixel_Format;   -- Data format (Pixel_Format type)
    end record
       with Convention => C_Pass_By_Copy;
 
    -- Texture_2D, tex data stored in GPU memory (VRAM)
    type Texture_2D is record
-      ID            : unsigned; -- OpenGL texture ID
-      Width, Height : int;      -- Texture base width and height
-      Mipmaps       : int;      -- Mipmap levels, 1 by default
-      Format        : int;      -- Data format (PixelFormat type)
+      ID            : unsigned;     -- OpenGL texture ID
+      Width, Height : int;          -- Texture base width and height
+      Mipmaps       : int;          -- Mipmap levels, 1 by default
+      Format        : Pixel_Format; -- Data format (Pixel_Format type)
    end record
       with Convention => C_Pass_By_Copy;
 
@@ -319,39 +445,39 @@ package Raylib is
 
    -- NPatch_Info, n-patch layout info
    type NPatch_Info is record
-      Source                   : Rectangle; -- Texture source rectangle
-      Left, Top, Right, Bottom : int;       -- Character border offsets
-      Layout                   : int;       -- Layout of the n-patch : 3x3, 1x3 or 3x1
+      Source                   : Rectangle;     -- Texture source rectangle
+      Left, Top, Right, Bottom : int;           -- Character border offsets
+      Layout                   : NPatch_Layout; -- Layout of the n-patch : 3x3, 1x3 or 3x1
    end record
       with Convention => C_Pass_By_Copy;
 
    -- Glyph_Info, font characters glyphs info
    type Glyph_Info is record
-      Value            : int;   -- Character value (Unicode)
-      OffsetX, OffsetY : int;   -- Character X and Y offset when drawing
-      AdvanceX         : int;   -- Charcater advance position X
-      Img              : Image; -- Character image data
+      Value              : int;   -- Character value (Unicode)
+      Offset_X, Offset_Y : int;   -- Character X and Y offset when drawing
+      Advance_X          : int;   -- Charcater advance position X
+      Img                : Image; -- Character image data
    end record
       with Convention => C_Pass_By_Copy;
 
    -- Font, font texture and Glyph_Info array data
    type Font is record
-      BaseSize     : int;               -- Base size (default chars height)
-      GlyphCount   : int;               -- Number of glyph characters
-      GlyphPadding : int;               -- Padding around the glyph characters
-      Texture      : Texture_2D;        -- Texture atlas containing the glyphs
-      Rectangles   : access Rectangle;  -- Rectangles in texture for the glyphs
-      Glyphs       : access Glyph_Info; -- Glyphs info data
+      Base_Size     : int;               -- Base size (default chars height)
+      Glyph_Count   : int;               -- Number of glyph characters
+      Glyph_Padding : int;               -- Padding around the glyph characters
+      Texture       : Texture_2D;        -- Texture atlas containing the glyphs
+      Rectangles    : access Rectangle;  -- Rectangles in texture for the glyphs
+      Glyphs        : access Glyph_Info; -- Glyphs info data
    end record
       with Convention => C_Pass_By_Copy;
 
    -- Camera3D, defines position and orientation in 3D space
    type Camera3D is record
-      Position   : Vector3; -- Camera position
-      Target     : Vector3; -- Camera target it looks-at
-      Up         : Vector3; -- Camera up vector (rotation over its axis)
-      Fov_Y      : Float;   -- Camera field-of-view aperture in Y (degrees) in perspective, used as near plane width in orthohtaphic
-      Projection : int;     -- Camera projection : CameraProjection.Perspective or CameraProjection.Orthographic
+      Position   : Vector3;           -- Camera position
+      Target     : Vector3;           -- Camera target it looks-at
+      Up         : Vector3;           -- Camera up vector (rotation over its axis)
+      Fov_Y      : Float;             -- Camera field-of-view aperture in Y (degrees) in perspective, used as near plane width in orthohtaphic
+      Projection : Camera_Projection; -- Camera projection : Camera_Projection_Perspective or Camera_Projection_Orthographic
    end record
       with Convention => C_Pass_By_Copy;
 

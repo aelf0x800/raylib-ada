@@ -1,0 +1,61 @@
+library project Raylib_Ada is
+   for Languages use ("Ada");
+   for Library_Name use "raylib_ada";
+   for Source_Dirs use ("src");
+   for Object_Dir use "obj";
+   for Create_Missing_Dirs use "True";
+   for Library_Dir use "lib";
+
+   -- Compiler flags
+   type Flag is ("on", "off");
+   Compiler_Warnings : Flag := External ("RAYLIB_ADA_COMPILE_WARNINGS", "on");
+   Runtime_Checks    : Flag := External ("RAYLIB_ADA_RUNTIME_CHECKS", "on");
+   Contracts_Checks  : Flag := External ("RAYLIB_ADA_CONTRACTS_CHECKS", "on");
+
+   -- Build the bindings in debug or optimize
+   type Build_Kind is ("optimize", "debug");
+   Build_Mode : Build_Kind := External ("RAYLIB_ADA_BUILD_MODE", "optimize");
+
+   -- Path to the raylib library (by default it uses system paths)
+   Raylib_Path := "";
+
+   -- Compiler switches
+   Compiler_Switches := ("-gnatQ");
+
+   case Compiler_Warnings is
+      when "on"  => Compiler_Switches := Compiler_Switches & ("-gnatwa");
+      when "off" => null;
+   end case;
+
+   case Runtime_Checks is
+      when "on"  => null; 
+      when "off" => Compiler_Switches := Compiler_Switches & ("-gnatp");
+   end case;
+
+   case Contracts_Checks is
+      when "on"  => Compiler_Switches := Compiler_Switches & ("-gnata");
+      when "off" => null;
+   end case;
+
+   case Build_Mode is
+      when "optimize" => 
+         Compiler_Switches := Compiler_Switches & ("-O3", "-gnatn");
+      when "debug" =>
+         Compiler_Switches := Compiler_Switches & ("-g", "-Og", "-gnatVa");
+   end case;
+
+   package Compiler is
+      for Default_Switches ("Ada") use Compiler_Switches;
+   end Compiler;
+
+   package Binder is
+      for Switches ("Ada") use ("-Es"); --  Symbolic traceback
+   end Binder;
+
+   package Linker is
+      case Raylib_Path is
+         when ""     => for Linker_Options use ("-lraylib");
+         when others => for Linker_Options use (Raylib_Path & "-lraylib");
+      end case;
+   end Linker;
+end Raylib_Ada;
