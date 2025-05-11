@@ -11,7 +11,7 @@ begin
     Raylib.Init_Window (640, 480, "Hello world!");
     Raylib.Timing.Set_Target_FPS (60);
     
-    Raylib.Set_Window_Title ("Title change test!");
+    --Raylib.Set_Window_Title ("Title change test!");
 
     Tex := Raylib.Textures.Load_Texture_2D_From_Image (Img);
 
@@ -22,7 +22,9 @@ begin
         Raylib.Clear_Background (Raylib.Black);
         Raylib.Textures.Draw_Texture (Tex, 0, 0, Raylib.White);
         Raylib.Draw_Line (10, 10, 100, 100, Raylib.Red);
-        Raylib.Draw_Ellipse (200, 200, 50.0, 100.0, Raylib.Green);
+        if Raylib.Is_Key_Down(Raylib.Key_Up) then
+           Raylib.Draw_Ellipse (200, 200, 50.0, 100.0, Raylib.Green);
+         end if;
         Raylib.Draw_Rectangle_Rec (Rect, Raylib.Blue);
         Raylib.End_Drawing;
     end loop;
