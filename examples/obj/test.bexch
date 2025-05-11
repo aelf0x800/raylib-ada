@@ -1,0 +1,22 @@
+[GENERATED OBJECT FILE]
+b__test.o
+[PROJECT FILES]
+/home/a/Desktop/raylib_ada/examples/test.gpr
+20250511191915 78b512c72baec68c5a9a2afedc9cb459
+/home/a/Desktop/raylib_ada/raylib_ada.gpr
+20250511191651 a5291634d2a45f0bb4a5e5e3eae3eb56
+[BOUND OBJECT FILES]
+/home/a/Desktop/raylib_ada/examples/obj/test.o
+[GENERATED SOURCE FILES]
+b__test.ads
+b__test.adb
+b__test.ali
+[RESULTING OPTIONS]
+-L/home/a/Desktop/raylib_ada/examples/obj/
+-L/home/a/Desktop/raylib_ada/examples/obj/
+-L/home/a/Desktop/raylib_ada/lib/
+-L/usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/adalib/
+-static
+-static-libgcc
+/usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/adalib/libgnat.a
+-ldl

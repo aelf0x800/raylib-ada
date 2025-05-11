@@ -52,10 +52,10 @@ library project Raylib_Ada is
       for Switches ("Ada") use ("-Es"); --  Symbolic traceback
    end Binder;
 
-   package Linker is
-      case Raylib_Path is
-         when ""     => for Linker_Options use ("-lraylib");
-         when others => for Linker_Options use (Raylib_Path & "-lraylib");
-      end case;
-   end Linker;
+--   package Linker is
+--      case Raylib_Path is
+--         when ""     => for Linker_Options use ("-lraylib");
+--         when others => for Linker_Options use (Raylib_Path & "-lraylib");
+--      end case;
+--   end Linker;
 end Raylib_Ada;

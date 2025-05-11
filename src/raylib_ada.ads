@@ -3,7 +3,7 @@ with Interfaces.C;
 with Interfaces.C.Strings;
 with System;
 
-package Raylib is
+package Raylib_Ada is
    use Ada.Characters.Latin_1;
    use Interfaces.C;
    use Interfaces.C.Strings;
@@ -1986,31 +1986,4 @@ package Raylib is
       -- TODO : void SetPixelColor(void *dstPtr, Color color, int format);         // Set color formatted into destination pixel pointer
       -- TODO : int GetPixelDataSize(int width, int height, int format);           // Get pixel data size in bytes for certain format
    end Textures;
-
-   package Timing is
-      -- Set target FPS (maximum)
-      procedure Set_Target_FPS (FPS : int)
-         with 
-            Import        => true,
-            Convention    => C,
-            External_Name => "SetTargetFPS";
-      -- Get time in seconds for last frame drawn (delta time)
-      function Get_Frame_Time return Float
-         with
-            Import        => true,
-            Convention    => C,
-            External_Name => "GetFrameTime";
-      -- Get time elapsed since InitWindow()
-      function Get_Time return Double
-         with
-            Import        => true,
-            Convention    => C,
-            External_Name => "GetTime";
-      -- Get current FPS
-      function Get_FPS return int
-         with 
-            Import        => true,
-            Convention    => C,
-            External_Name => "GetFPS";
-   end Timing;
-end Raylib;
+end Raylib_Ada;

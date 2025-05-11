@@ -1,7 +1,7 @@
 with Interfaces.C;
 with Interfaces.C.Strings;
 
-package body Raylib is
+package body Raylib_Ada is
    package C renames Interfaces.C;
 
    --//////////////////////////////////////////////////////////////////////////
@@ -746,4 +746,4 @@ package body Raylib is
             return Result;
         end Export_Image_As_Code;
     end Textures;
-end Raylib;
+end Raylib_Ada;

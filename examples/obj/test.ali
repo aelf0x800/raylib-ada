@@ -1,0 +1,47 @@
+V "GNAT Lib v15"
+M P W=8
+A -gnatA
+A -gnatW8
+A -mtune=generic
+A -march=x86-64
+P ZX
+
+RN
+RV NO_IMPLEMENTATION_PRAGMAS
+
+U test%b		test.adb		cd8c2ebf NE OO SU
+W raylib_ada%s		raylib_ada.adb		raylib_ada.ali
+
+D ada.ads		20250427141335 76789da1 ada%s
+D a-charac.ads		20250427141335 2d3ec45b ada.characters%s
+D a-chlat1.ads		20250427141335 e0d72e76 ada.characters.latin_1%s
+D a-unccon.ads		20250427141335 0e9b276f ada.unchecked_conversion%s
+D interfac.ads		20250427141335 9111f9c1 interfaces%s
+D i-c.ads		20250427141335 e94c966a interfaces.c%s
+D i-cstrin.ads		20250427141335 5409c1a4 interfaces.c.strings%s
+D raylib_ada.ads	20250511191954 8a87195b raylib_ada%s
+D system.ads		20250427141335 14286b0f system%s
+D s-exctab.ads		20250427141335 91bef6ef system.exception_table%s
+D s-parame.ads		20250427141335 3597fc11 system.parameters%s
+D s-stalib.ads		20250427141335 1c9580f6 system.standard_library%s
+D test.adb		20250511192209 470b37e4 test%b
+G a e
+G c Z b b [test standard 3 11 none]
+G r c none [test standard 3 11 none] [init_window raylib_ada 706 14 none]
+G r c none [test standard 3 11 none] [window_should_close raylib_ada 714 13 none]
+G r c none [test standard 3 11 none] [begin_drawing raylib_ada 1356 14 none]
+G r c none [test standard 3 11 none] [clear_background raylib_ada 1350 14 none]
+G r c none [test standard 3 11 none] [end_drawing raylib_ada 1362 14 none]
+G r c none [test standard 3 11 none] [close_window raylib_ada 708 14 none]
+X 8 raylib_ada.ads
+6K9*Raylib_Ada 1989e15 13|1w6 1r22 5r4 6r14 7r7 8r7 8r36 9r7 11r4
+687r4*Blue{408R9} 13|8r47
+706U14*Init_Window 13|5s15
+708U14*Close_Window 13|11s15
+714V13*Window_Should_Close{boolean} 13|6s25
+1350U14*Clear_Background 13|8s18
+1356U14*Begin_Drawing 13|7s18
+1362U14*End_Drawing 13|9s18
+X 13 test.adb
+3U11*Test 3b11 12l5 12t9
+
