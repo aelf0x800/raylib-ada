@@ -23,7 +23,7 @@ package ada_main is
    GNAT_Version_Address : constant System.Address := GNAT_Version'Address;
    pragma Export (C, GNAT_Version_Address, "__gnat_version_address");
 
-   Ada_Main_Program_Name : constant String := "_ada_test" & ASCII.NUL;
+   Ada_Main_Program_Name : constant String := "_ada_core_2d_camera" & ASCII.NUL;
    pragma Export (C, Ada_Main_Program_Name, "__gnat_ada_main_program_name");
 
    procedure adainit;
@@ -40,15 +40,15 @@ package ada_main is
    pragma Export (C, main, "main");
 
    type Version_32 is mod 2 ** 32;
-   u00001 : constant Version_32 := 16#cd8c2ebf#;
-   pragma Export (C, u00001, "testB");
+   u00001 : constant Version_32 := 16#ad107f56#;
+   pragma Export (C, u00001, "core_2d_cameraB");
    u00002 : constant Version_32 := 16#b2cfab41#;
    pragma Export (C, u00002, "system__standard_libraryB");
    u00003 : constant Version_32 := 16#0626cc96#;
    pragma Export (C, u00003, "system__standard_libraryS");
-   u00004 : constant Version_32 := 16#b056bb41#;
+   u00004 : constant Version_32 := 16#fe408a28#;
    pragma Export (C, u00004, "raylib_adaB");
-   u00005 : constant Version_32 := 16#c33d0bec#;
+   u00005 : constant Version_32 := 16#008b58d9#;
    pragma Export (C, u00005, "raylib_adaS");
    u00006 : constant Version_32 := 16#9111f9c1#;
    pragma Export (C, u00006, "interfacesS");
@@ -250,10 +250,18 @@ package ada_main is
    pragma Export (C, u00104, "interfaces__c__stringsB");
    u00105 : constant Version_32 := 16#bd4557ce#;
    pragma Export (C, u00105, "interfaces__c__stringsS");
-   u00106 : constant Version_32 := 16#0ddbd91f#;
-   pragma Export (C, u00106, "system__memoryB");
-   u00107 : constant Version_32 := 16#0cbcf715#;
-   pragma Export (C, u00107, "system__memoryS");
+   u00106 : constant Version_32 := 16#e259c480#;
+   pragma Export (C, u00106, "system__assertionsB");
+   u00107 : constant Version_32 := 16#322b1494#;
+   pragma Export (C, u00107, "system__assertionsS");
+   u00108 : constant Version_32 := 16#8b2c6428#;
+   pragma Export (C, u00108, "ada__assertionsB");
+   u00109 : constant Version_32 := 16#cc3ec2fd#;
+   pragma Export (C, u00109, "ada__assertionsS");
+   u00110 : constant Version_32 := 16#0ddbd91f#;
+   pragma Export (C, u00110, "system__memoryB");
+   u00111 : constant Version_32 := 16#0cbcf715#;
+   pragma Export (C, u00111, "system__memoryS");
 
    --  BEGIN ELABORATION ORDER
    --  ada%s
@@ -358,11 +366,15 @@ package ada_main is
    --  system.traceback.symbolic%s
    --  system.traceback.symbolic%b
    --  ada.exceptions%b
+   --  ada.assertions%s
+   --  ada.assertions%b
    --  interfaces.c.strings%s
    --  interfaces.c.strings%b
+   --  system.assertions%s
+   --  system.assertions%b
    --  raylib_ada%s
    --  raylib_ada%b
-   --  test%b
+   --  core_2d_camera%b
    --  END ELABORATION ORDER
 
 end ada_main;

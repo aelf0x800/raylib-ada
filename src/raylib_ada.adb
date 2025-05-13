@@ -8,9 +8,9 @@ package body Raylib_Ada is
    -- Window-related functions and procedures
    --//////////////////////////////////////////////////////////////////////////
    -- Initialize window and OpenGL context
-   procedure Init_Window (Width, Height : int; Title : String) is
+   procedure Init_Window (Width, Height : C_Int; Title : String) is
       procedure C_Init_Window 
-         (Width, Height : int; Title : C.Strings.chars_ptr)
+         (Width, Height : C_Int; Title : C.Strings.chars_ptr)
          with 
             Import        => true,
             Convention    => C,
@@ -154,8 +154,8 @@ package body Raylib_Ada is
    end Set_Window_Title;
 
    -- Get the human-readable, UTF-8 encoded name of the specified monitor
-   function Get_Monitor_Name (Monitor : int) return String is
-      function C_Get_Monitor_Name (Monitor : int) return C.Strings.chars_ptr
+   function Get_Monitor_Name (Monitor : C_Int) return String is
+      function C_Get_Monitor_Name (Monitor : C_Int) return C.Strings.chars_ptr
          with
             Import        => true,
             Convention    => C,
@@ -285,10 +285,10 @@ package body Raylib_Ada is
 
    -- Get shader uniform location
    function Get_Shader_Location 
-      (Shadr : Shader; Uniform_Name : String) return int
+      (Shadr : Shader; Uniform_Name : String) return C_Int
    is
       function C_Get_Shader_Location 
-         (Shadr : Shader; Uniform_Name : C.Strings.chars_ptr) return int 
+         (Shadr : Shader; Uniform_Name : C.Strings.chars_ptr) return C_Int 
          with
             Import        => true,
             Convention    => C,
@@ -296,7 +296,7 @@ package body Raylib_Ada is
 
       C_Uniform_Name : C.Strings.chars_ptr := 
          C.Strings.New_String (Uniform_Name);
-      Location       : int                 := 
+      Location       : C_Int                 := 
          C_Get_Shader_Location (Shadr, C_Uniform_Name);
    begin
       Free (C_Uniform_Name);
@@ -305,10 +305,10 @@ package body Raylib_Ada is
 
    -- Get shader attribute location
    function Get_Shader_Location_Attrib 
-      (Shadr : shader; Attrib_Name : String) return int
+      (Shadr : shader; Attrib_Name : String) return C_Int
    is
       function C_Get_Shader_Location_Attrib 
-         (Shadr : shader; Attrib_Name : C.Strings.chars_ptr) return int 
+         (Shadr : shader; Attrib_Name : C.Strings.chars_ptr) return C_Int 
          with
             Import        => true,
             Convention    => C,
@@ -316,7 +316,7 @@ package body Raylib_Ada is
       
       C_Attrib_Name : C.Strings.chars_ptr := 
          C.Strings.New_String (Attrib_Name);
-      Location      : int                 := 
+      Location      : C_Int                 := 
          C_Get_Shader_Location_Attrib (Shadr, C_Attrib_Name);
    begin
       Free (C_Attrib_Name);
@@ -424,7 +424,7 @@ package body Raylib_Ada is
 
    -- Get char pressed (unicode), call it multiple times for chars queued, returns 0 when the queue is empty
    function Get_Char_Pressed return Wide_Character is
-      function C_Get_Char_Pressed return int
+      function C_Get_Char_Pressed return C_Int
          with
             Import        => true,
             Convention    => C,
@@ -438,8 +438,8 @@ package body Raylib_Ada is
 
    -- Input-related functions: gamepads
    -- Check if a gamepad is available
-   function Is_Gamepad_Available (Gamepad : int) return Boolean is
-      function C_Is_Gamepad_Available (Gamepad : int) return C.C_bool
+   function Is_Gamepad_Available (Gamepad : C_Int) return Boolean is
+      function C_Is_Gamepad_Available (Gamepad : C_Int) return C.C_bool
          with
             Import        => true,
             Convention    => C,
@@ -450,9 +450,9 @@ package body Raylib_Ada is
       return Result;
    end Is_Gamepad_Available;
    
-   -- Get gamepad internal name id
-   function Get_Gamepad_Name (Gamepad : int) return String is
-      function C_Get_Gamepad_Name (Gamepad : int) return C.Strings.chars_ptr 
+   -- Get gamepad C_Internal name id
+   function Get_Gamepad_Name (Gamepad : C_Int) return String is
+      function C_Get_Gamepad_Name (Gamepad : C_Int) return C.Strings.chars_ptr 
          with
             Import        => true,
             Convention    => C,
@@ -466,9 +466,9 @@ package body Raylib_Ada is
    
    -- Check if a gamepad button has been pressed once
    function Is_Gamepad_Button_Pressed 
-      (Gamepad : int; Button : Gamepad_Button) return Boolean is
+      (Gamepad : C_Int; Button : Gamepad_Button) return Boolean is
       function C_Is_Gamepad_Button_Pressed 
-         (Gamepad : int; Button : Gamepad_Button) return C.C_bool 
+         (Gamepad : C_Int; Button : Gamepad_Button) return C.C_bool 
          with
             Import        => true,
             Convention    => C,
@@ -482,9 +482,9 @@ package body Raylib_Ada is
 
    -- Check if a gamepad button is being pressed
    function Is_Gamepad_Button_Down
-      (Gamepad : int; Button : Gamepad_Button) return Boolean is
+      (Gamepad : C_Int; Button : Gamepad_Button) return Boolean is
       function C_Is_Gamepad_Button_Down 
-         (Gamepad : int; Button : Gamepad_Button) return C.C_bool
+         (Gamepad : C_Int; Button : Gamepad_Button) return C.C_bool
          with
             Import        => true,
             Convention    => C,
@@ -497,9 +497,9 @@ package body Raylib_Ada is
 
    -- Check if a gamepad button has been released once
    function Is_Gamepad_Button_Released 
-      (Gamepad : int; Button : Gamepad_Button) return Boolean is
+      (Gamepad : C_Int; Button : Gamepad_Button) return Boolean is
       function C_Is_Gamepad_Button_Released 
-         (Gamepad : int; Button : Gamepad_Button) return C.C_bool
+         (Gamepad : C_Int; Button : Gamepad_Button) return C.C_bool
          with
             Import        => true,
             Convention    => C,
@@ -513,9 +513,9 @@ package body Raylib_Ada is
 
    -- Check if a gamepad button is NOT being pressed
    function Is_Gamepad_Button_Up 
-      (Gamepad : int; Button : Gamepad_Button) return Boolean is
+      (Gamepad : C_Int; Button : Gamepad_Button) return Boolean is
       function C_Is_Gamepad_Button_Up 
-         (Gamepad : int; Button : Gamepad_Button) return C.C_bool
+         (Gamepad : C_Int; Button : Gamepad_Button) return C.C_bool
          with
             Import        => true,
             Convention    => C,
@@ -526,17 +526,17 @@ package body Raylib_Ada is
       return Result;
    end Is_Gamepad_Button_Up;
 
-   -- Set internal gamepad mappings (SDL_GameControllerDB)
-   function Set_Gamepad_Mappings (Mappings : String) return int is
+   -- Set C_Internal gamepad mappings (SDL_GameControllerDB)
+   function Set_Gamepad_Mappings (Mappings : String) return C_Int is
       function C_Set_Gamepad_Mappings 
-         (Mappings : C.Strings.chars_ptr) return int 
+         (Mappings : C.Strings.chars_ptr) return C_Int 
          with
             Import        => true,
             Convention    => C,
             External_Name => "SetGamepadMappings";
 
       C_Mappings : C.Strings.chars_ptr := C.Strings.New_String (Mappings);
-      Result     : int                 := C_Set_Gamepad_Mappings (C_Mappings);
+      Result     : C_Int                 := C_Set_Gamepad_Mappings (C_Mappings);
    begin
       Free (C_Mappings);
       return Result;
@@ -603,7 +603,7 @@ package body Raylib_Ada is
         -- Image loading functions
         -- NOTE: These functions do not require GPU access
         --/////////////////////////////////////////////////////////////////////////////
-        -- Load image from file into CPU memory (RAM)
+        -- Load image from file C_Into CPU memory (RAM)
         function Load_Image (File_Name : String) return Image 
         is
             function LoadImage (File_Name : chars_ptr) return Image
@@ -620,9 +620,9 @@ package body Raylib_Ada is
         end Load_Image;
     
         -- Load image from RAW file data
-        function Load_Image_Raw (File_Name : String; Width, Height, Format, Header_Size : int) return Image 
+        function Load_Image_Raw (File_Name : String; Width, Height, Format, Header_Size : C_Int) return Image 
         is
-            function LoadImageRaw (File_Name : chars_ptr; Width, Height, Format, Header_Size : int) return Image
+            function LoadImageRaw (File_Name : chars_ptr; Width, Height, Format, Header_Size : C_Int) return Image
                 with
                     Import        => true,
                     Convention    => C,
@@ -636,8 +636,8 @@ package body Raylib_Ada is
         end Load_Image_Raw;
         
         -- Load image sequence from file (frames appended to image.data)
-        function Load_Image_Anim (File_Name : String; Frames : access int) return Image is
-            function LoadImageAnim (File_Name : chars_ptr; Frames : access int) return Image
+        function Load_Image_Anim (File_Name : String; Frames : access C_Int) return Image is
+            function LoadImageAnim (File_Name : chars_ptr; Frames : access C_Int) return Image
                 with
                     Import        => true,
                     Convention    => C,
@@ -654,13 +654,13 @@ package body Raylib_Ada is
         function Load_Image_Anim_From_Memory 
             (File_Type : String; 
              File_Data : access unsigned_char; 
-             Data_Size : int; 
-             Frames : access int) return Image is
+             Data_Size : C_Int; 
+             Frames : access C_Int) return Image is
             function LoadImageAnimFromMemory 
                 (File_Type : chars_ptr; 
                  File_Data : access unsigned_char; 
-                 Data_Size : int; 
-                 Frames : access int) return Image
+                 Data_Size : C_Int; 
+                 Frames : access C_Int) return Image
                 with
                     Import        => true,
                     Convention    => C,
@@ -674,8 +674,8 @@ package body Raylib_Ada is
         end Load_Image_Anim_From_Memory;
 
         -- Load image from memory buffer, fileType refers to extension: i.e. '.png'
-        function Load_Image_From_Memory (File_Type : String; File_Data : access unsigned_char; Data_Size : int) return Image is
-            function LoadImageFromMemory (File_Type : chars_ptr; File_Data : access unsigned_char; Data_Size : int) return Image 
+        function Load_Image_From_Memory (File_Type : String; File_Data : access unsigned_char; Data_Size : C_Int) return Image is
+            function LoadImageFromMemory (File_Type : chars_ptr; File_Data : access unsigned_char; Data_Size : C_Int) return Image 
                 with 
                     Import        => true,
                     Convention    => C,
@@ -717,8 +717,8 @@ package body Raylib_Ada is
         end Export_Image;
 
         -- Export image to memory buffer
-        function Export_Image_To_Memory (Img : Image; File_Type : String; File_Size : access int) return access unsigned_char is
-            function ExportImageToMemory (Img : Image; File_Type : chars_ptr; File_Size : access int) return access unsigned_char
+        function Export_Image_To_Memory (Img : Image; File_Type : String; File_Size : access C_Int) return access unsigned_char is
+            function ExportImageToMemory (Img : Image; File_Type : chars_ptr; File_Size : access C_Int) return access unsigned_char
                 with
                     Import        => true,
                     Convention    => C,

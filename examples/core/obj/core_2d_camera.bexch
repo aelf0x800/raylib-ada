@@ -1,0 +1,22 @@
+[GENERATED OBJECT FILE]
+b__core_2d_camera.o
+[PROJECT FILES]
+/home/a/Desktop/raylib_ada/examples/core/core_2d_camera.gpr
+20250513065622 0d95237986b5723e19bcc5e451989dcf
+/home/a/Desktop/raylib_ada/raylib_ada.gpr
+20250511192831 99737d5e1e06845390ac782c6f6dbd19
+[BOUND OBJECT FILES]
+/home/a/Desktop/raylib_ada/examples/core/obj/core_2d_camera.o
+[GENERATED SOURCE FILES]
+b__core_2d_camera.ads
+b__core_2d_camera.adb
+b__core_2d_camera.ali
+[RESULTING OPTIONS]
+-L/home/a/Desktop/raylib_ada/examples/core/obj/
+-L/home/a/Desktop/raylib_ada/examples/core/obj/
+-L/home/a/Desktop/raylib_ada/lib/
+-L/usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/adalib/
+-static
+-static-libgcc
+/usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/adalib/libgnat.a
+-ldl

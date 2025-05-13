@@ -1,0 +1,99 @@
+V "GNAT Lib v15"
+M P W=8
+A -gnatA
+A -gnatW8
+A -mtune=generic
+A -march=x86-64
+P ZX
+
+RN
+RV NO_FLOATING_POINT
+RV NO_IMPLEMENTATION_PRAGMAS
+
+U core_2d_camera%b	core_2d_camera.adb	ad107f56 NE OO SU
+W raylib_ada%s		raylib_ada.adb		raylib_ada.ali
+
+D ada.ads		20250427141335 76789da1 ada%s
+D a-charac.ads		20250427141335 2d3ec45b ada.characters%s
+D a-chlat1.ads		20250427141335 e0d72e76 ada.characters.latin_1%s
+D a-unccon.ads		20250427141335 0e9b276f ada.unchecked_conversion%s
+D core_2d_camera.adb	20250513190047 e4213538 core_2d_camera%b
+D interfac.ads		20250427141335 9111f9c1 interfaces%s
+D i-c.ads		20250427141335 e94c966a interfaces.c%s
+D i-cstrin.ads		20250427141335 5409c1a4 interfaces.c.strings%s
+D raylib_ada.ads	20250513190340 49314a6e raylib_ada%s
+D system.ads		20250427141335 14286b0f system%s
+D s-exctab.ads		20250427141335 91bef6ef system.exception_table%s
+D s-parame.ads		20250427141335 3597fc11 system.parameters%s
+D s-stalib.ads		20250427141335 1c9580f6 system.standard_library%s
+G a e
+G c Z b b [core_2d_camera standard 12 11 none]
+G r c none [core_2d_camera standard 12 11 none] [get_random_value raylib_ada 1119 13 none]
+G r c none [core_2d_camera standard 12 11 none] [init_window raylib_ada 718 14 none]
+G r c none [core_2d_camera standard 12 11 none] [set_target_fps raylib_ada 1057 14 none]
+G r c none [core_2d_camera standard 12 11 none] [window_should_close raylib_ada 726 13 none]
+G r c none [core_2d_camera standard 12 11 none] [is_key_down raylib_ada 1186 13 none]
+G r c none [core_2d_camera standard 12 11 none] [get_mouse_wheel_move raylib_ada 1304 13 none]
+G r c none [core_2d_camera standard 12 11 none] [is_key_pressed raylib_ada 1182 13 none]
+G r c none [core_2d_camera standard 12 11 none] [begin_drawing raylib_ada 1368 14 none]
+G r c none [core_2d_camera standard 12 11 none] [clear_background raylib_ada 1362 14 none]
+G r c none [core_2d_camera standard 12 11 none] [begin_mode_2d raylib_ada 1380 14 none]
+G r c none [core_2d_camera standard 12 11 none] [draw_rectangle raylib_ada 1583 14 none]
+G r c none [core_2d_camera standard 12 11 none] [draw_rectangle_rec raylib_ada 1595 14 none]
+G r c none [core_2d_camera standard 12 11 none] [end_mode_2d raylib_ada 1386 14 none]
+G r c none [core_2d_camera standard 12 11 none] [end_drawing raylib_ada 1374 14 none]
+G r c none [core_2d_camera standard 12 11 none] [close_window raylib_ada 720 14 none]
+X 5 core_2d_camera.adb
+12U11*Core_2D_Camera 12b11 120l5 120t19
+13i4 Width{integer} 19r16 32r28
+14i4 Height{integer} 19r37 32r35 41r41
+16r4 Player{9|426R9} 18r9 18r26 59m10 59r22 61m10 61r22 65r25 65r42 111r44
+17r4 Camera{9|497R9} 65m7 69m10 69r29 71m10 71r29 75r10 76m10 77r13 78m10
+. 82m7 82r22 85r10 86m10 87r13 88m10 93m10 94m10 103r36
+23i4 Buildings_Count{integer} 24r34 25r34 38r21 107r27
+24a4 Buildings(9|426R9) 39m10 40m10 41m10 41r59 42m10 44r40 108r47
+25a4 Build_Colors(9|420R9) 46m10 108r62
+27i4 TestVal{integer}
+36i7 Spacing{integer} 42r51 44m10 44r21
+38i11 I{integer} 39r21 40r21 41r21 41r70 42r21 44r51 46r24
+107i17 I{integer} 108r58 108r76
+X 9 raylib_ada.ads
+6K9*Raylib_Ada 5|7w6 7r22 16r13 17r13 24r54 25r54 27r25 32r4 33r4 39r41 40r41
+. 53r14 58r10 58r34 60r13 60r37 68r10 68r34 70r13 70r37 82r36 92r10 92r37
+. 100r7 101r10 101r39 103r10 104r13 105r42 108r16 111r13 111r52 112r10 113r7
+. 119r4 9|2001e15
+20I12*C_Int{integer}
+64n8*Key_A{37E9} 5|68r45
+81n8*Key_R{37E9} 5|92r48
+82n8*Key_S{37E9} 5|70r48
+101n8*Key_Right{37E9} 5|58r45
+102n8*Key_Left{37E9} 5|60r48
+420R9*Color 5|25r65 9|423e7
+426R9*Rectangle 5|16r24 24r65 9|430e7
+427f7*X{float} 5|18r16 42m24 59m17 59r29 61m17 61r29 65r32
+427f10*Y{float} 5|18r33 41m24 65r49
+428f7*Width{float} 5|39m24 44r54
+428f14*Height{float} 5|40m24 41r73
+497R9*Camera_2D 5|17r24 9|503e7
+499r7*Target{390R9} 5|65m14
+500f7*Rotation{float} 5|69m17 69r36 71m17 71r36 75r17 76m17 77r20 78m17 94m17
+501f7*Zoom{float} 5|82m14 82r29 85r17 86m17 87r20 88m17 93m17
+688r4*Dark_Gray{420R9} 5|105r53
+693r4*Red{420R9} 5|111r63
+712r4*Ray_White{420R9} 5|101r50
+718U14*Init_Window 5|32s15
+720U14*Close_Window 5|119s15
+726V13*Window_Should_Close{boolean} 5|53s25
+1057U14*Set_Target_FPS 5|33s15
+1119V13*Get_Random_Value{20I12} 5|27s36 39s52 40s52
+1182V13*Is_Key_Pressed{boolean} 5|92s21
+1186V13*Is_Key_Down{boolean} 5|58s21 60s24 68s21 70s24
+1304V13*Get_Mouse_Wheel_Move{float} 5|82s47
+1362U14*Clear_Background 5|101s21
+1368U14*Begin_Drawing 5|100s18
+1374U14*End_Drawing 5|113s18
+1380U14*Begin_Mode_2D 5|103s21
+1386U14*End_Mode_2D 5|112s21
+1583U14*Draw_Rectangle 5|104s24
+1595U14*Draw_Rectangle_Rec 5|108s27 111s24
+

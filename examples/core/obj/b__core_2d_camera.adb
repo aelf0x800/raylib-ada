@@ -1,7 +1,7 @@
 pragma Warnings (Off);
 pragma Ada_95;
-pragma Source_File_Name (ada_main, Spec_File_Name => "b__test.ads");
-pragma Source_File_Name (ada_main, Body_File_Name => "b__test.adb");
+pragma Source_File_Name (ada_main, Spec_File_Name => "b__core_2d_camera.ads");
+pragma Source_File_Name (ada_main, Body_File_Name => "b__core_2d_camera.adb");
 pragma Suppress (Overflow_Check);
 
 package body ada_main is
@@ -22,6 +22,7 @@ package body ada_main is
    E050 : Short_Integer; pragma Import (Ada, E050, "system__dwarf_lines_E");
    E023 : Short_Integer; pragma Import (Ada, E023, "system__soft_links__initialize_E");
    E042 : Short_Integer; pragma Import (Ada, E042, "system__traceback__symbolic_E");
+   E109 : Short_Integer; pragma Import (Ada, E109, "ada__assertions_E");
    E105 : Short_Integer; pragma Import (Ada, E105, "interfaces__c__strings_E");
    E005 : Short_Integer; pragma Import (Ada, E005, "raylib_ada_E");
 
@@ -159,13 +160,15 @@ package body ada_main is
       System.Traceback.Symbolic'Elab_Body;
       E042 := E042 + 1;
       E010 := E010 + 1;
+      Ada.Assertions'Elab_Spec;
+      E109 := E109 + 1;
       Interfaces.C.Strings'Elab_Spec;
       E105 := E105 + 1;
       E005 := E005 + 1;
    end adainit;
 
    procedure Ada_Main_Program;
-   pragma Import (Ada, Ada_Main_Program, "_ada_test");
+   pragma Import (Ada, Ada_Main_Program, "_ada_core_2d_camera");
 
    function main
      (argc : Integer;
@@ -199,9 +202,9 @@ package body ada_main is
    end;
 
 --  BEGIN Object file/option list
-   --   /home/a/Desktop/raylib_ada/examples/obj/test.o
-   --   -L/home/a/Desktop/raylib_ada/examples/obj/
-   --   -L/home/a/Desktop/raylib_ada/examples/obj/
+   --   /home/a/Desktop/raylib_ada/examples/core/obj/core_2d_camera.o
+   --   -L/home/a/Desktop/raylib_ada/examples/core/obj/
+   --   -L/home/a/Desktop/raylib_ada/examples/core/obj/
    --   -L/home/a/Desktop/raylib_ada/lib/
    --   -L/usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/adalib/
    --   -static
