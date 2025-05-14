@@ -1,9 +1,4 @@
-with Interfaces.C;
-with Interfaces.C.Strings;
-
 package body Raylib_Ada is
-   package C renames Interfaces.C;
-
    --//////////////////////////////////////////////////////////////////////////
    -- Window-related functions and procedures
    --//////////////////////////////////////////////////////////////////////////
@@ -19,7 +14,7 @@ package body Raylib_Ada is
       C_Title : C.Strings.chars_ptr := C.Strings.New_String (Title);
    begin
       C_Init_Window (Width, Height, C_Title);
-      Free (C_Title);
+      C.Strings.Free (C_Title);
    end Init_Window;
 
    -- Check if application should close (KEY_ESCAPE pressed or windows close icon clicked)
@@ -30,7 +25,7 @@ package body Raylib_Ada is
             Convention    => C,
             External_Name => "WindowShouldClose";
    
-      Result : Boolean := Boolean (C_Window_Should_Close);
+      Result : constant Boolean := Boolean (C_Window_Should_Close);
    begin
       return Result;
    end Window_Should_Close;
@@ -43,7 +38,7 @@ package body Raylib_Ada is
             Convention    => C,
             External_Name => "IsWindowReady";
    
-      Result : Boolean := Boolean (C_Is_Window_Ready);
+      Result : constant Boolean := Boolean (C_Is_Window_Ready);
    begin
       return Result;
    end Is_Window_Ready;
@@ -56,7 +51,7 @@ package body Raylib_Ada is
             Convention    => C,
             External_Name => "IsWindowFullscreen";
    
-      Result : Boolean := Boolean (C_Is_Window_Fullscreen);
+      Result : constant Boolean := Boolean (C_Is_Window_Fullscreen);
    begin
       return Result;
    end Is_Window_Fullscreen;
@@ -69,7 +64,7 @@ package body Raylib_Ada is
             Convention    => C,
             External_Name => "IsWindowHidden";
    
-      Result : Boolean := Boolean (C_Is_Window_Hidden);
+      Result : constant Boolean := Boolean (C_Is_Window_Hidden);
    begin
       return Result;
    end Is_Window_Hidden;
@@ -82,7 +77,7 @@ package body Raylib_Ada is
             Convention    => C,
             External_Name => "IsWindowMinimized";
    
-      Result : Boolean := Boolean (C_Is_Window_Minimized);
+      Result : constant Boolean := Boolean (C_Is_Window_Minimized);
    begin
       return Result;
    end Is_Window_Minimized;
@@ -95,7 +90,7 @@ package body Raylib_Ada is
             Convention    => C,
             External_Name => "IsWindowMaximized";
    
-      Result : Boolean := Boolean (C_Is_Window_Maximized);
+      Result : constant Boolean := Boolean (C_Is_Window_Maximized);
    begin
       return Result;
    end Is_Window_Maximized;
@@ -108,7 +103,7 @@ package body Raylib_Ada is
             Convention    => C,
             External_Name => "IsWindowFocused";
    
-      Result : Boolean := Boolean (C_Is_Window_Focused);
+      Result : constant Boolean := Boolean (C_Is_Window_Focused);
    begin
       return Result;
    end Is_Window_Focused;
@@ -121,20 +116,20 @@ package body Raylib_Ada is
             Convention    => C,
             External_Name => "IsWindowResized";
    
-      Result : Boolean := Boolean (C_Is_Window_Resized);
+      Result : constant Boolean := Boolean (C_Is_Window_Resized);
    begin
       return Result;
    end Is_Window_Resized;
 
    -- Check if one specific window flag is enabled
-   function Is_Window_State (Flag : unsigned) return Boolean is
-      function C_Is_Window_State (Flag : unsigned) return C.C_bool
+   function Is_Window_State (Flag : C.unsigned) return Boolean is
+      function C_Is_Window_State (Flag : C.unsigned) return C.C_bool
          with
             Import        => true,
             Convention    => C,
             External_Name => "IsWindowState";
    
-      Result : Boolean := Boolean (C_Is_Window_State (Flag));
+      Result : constant Boolean := Boolean (C_Is_Window_State (Flag));
    begin
       return Result;
    end Is_Window_State;
@@ -150,7 +145,7 @@ package body Raylib_Ada is
       C_Title : C.Strings.chars_ptr := C.Strings.New_String (Title);
    begin
       C_Set_Window_Title (C_Title);
-      Free (C_Title);
+      C.Strings.Free (C_Title);
    end Set_Window_Title;
 
    -- Get the human-readable, UTF-8 encoded name of the specified monitor
@@ -178,7 +173,7 @@ package body Raylib_Ada is
       C_Text : C.Strings.chars_ptr := C.Strings.New_String (Text);
    begin
       C_Set_Clipboard_Text (C_Text);
-      Free (C_Text);
+      C.Strings.Free (C_Text);
    end Set_Clipboard_Text;
 
    -- Get clipboard text content
@@ -206,7 +201,7 @@ package body Raylib_Ada is
          Convention    => C,
          External_Name => "IsCursorHidden";
   
-      Result : Boolean := Boolean (C_Is_Cursor_Hidden);
+      Result : constant Boolean := Boolean (C_Is_Cursor_Hidden);
    begin
       return Result;
    end Is_Cursor_Hidden;
@@ -219,7 +214,7 @@ package body Raylib_Ada is
          Convention    => C,
          External_Name => "IsCursorOnScreen";
 
-      Result : Boolean := Boolean (C_Is_Cursor_On_Screen);
+      Result : constant Boolean := Boolean (C_Is_Cursor_On_Screen);
    begin
       return Result;
    end Is_Cursor_On_Screen;
@@ -245,8 +240,8 @@ package body Raylib_Ada is
       Shadr          : Shader              := 
          C_Load_Shader (C_Vs_File_Name, C_Fs_File_Name); 
    begin
-      Free (C_Vs_File_Name);
-      Free (C_Fs_File_Name);
+      C.Strings.Free (C_Vs_File_Name);
+      C.Strings.Free (C_Fs_File_Name);
       return Shadr;
    end Load_Shader;
 
@@ -266,8 +261,8 @@ package body Raylib_Ada is
       Shadr     : Shader              := 
          C_Load_Shader_From_Memory (C_Vs_Code, C_Fs_Code);
    begin
-      Free (C_Vs_Code);
-      Free (C_Fs_Code);
+      C.Strings.Free (C_Vs_Code);
+      C.Strings.Free (C_Fs_Code);
       return Shadr;
    end Load_Shader_From_Memory;
 
@@ -278,7 +273,7 @@ package body Raylib_Ada is
             Convention    => C,
             External_Name => "IsShaderValid";
    
-      Result : Boolean := Boolean (C_Is_Shader_Valid (Shadr));
+      Result : constant Boolean := Boolean (C_Is_Shader_Valid (Shadr));
    begin
       return Result;
    end Is_Shader_Valid;
@@ -296,10 +291,10 @@ package body Raylib_Ada is
 
       C_Uniform_Name : C.Strings.chars_ptr := 
          C.Strings.New_String (Uniform_Name);
-      Location       : C_Int                 := 
+      Location       : C_Int               := 
          C_Get_Shader_Location (Shadr, C_Uniform_Name);
    begin
-      Free (C_Uniform_Name);
+      C.Strings.Free (C_Uniform_Name);
       return Location;
    end Get_Shader_Location;
 
@@ -316,10 +311,10 @@ package body Raylib_Ada is
       
       C_Attrib_Name : C.Strings.chars_ptr := 
          C.Strings.New_String (Attrib_Name);
-      Location      : C_Int                 := 
+      Location      : C_Int               := 
          C_Get_Shader_Location_Attrib (Shadr, C_Attrib_Name);
    begin
-      Free (C_Attrib_Name);
+      C.Strings.Free (C_Attrib_Name);
       return Location;
    end Get_Shader_Location_Attrib;
 
@@ -337,8 +332,9 @@ package body Raylib_Ada is
       C_File_Name : C.Strings.chars_ptr := C.Strings.New_String (File_Name);
    begin
       C_Take_Screenshot (C_File_Name);
-      Free (C_File_Name);
+      C.Strings.Free (C_File_Name);
    end Take_Screenshot;
+
    -- Open URL with default system browser (if available)
    procedure Open_URL (URL : String) is
       procedure C_Open_URL (URL : C.Strings.chars_ptr) 
@@ -350,7 +346,7 @@ package body Raylib_Ada is
       C_URL : C.Strings.chars_ptr := C.Strings.New_String (URL);
    begin
       C_Open_URL (C_URL);
-      Free (C_URL);
+      C.Strings.Free (C_URL);
    end Open_URL;
 
    --//////////////////////////////////////////////////////////////////////////
@@ -365,7 +361,7 @@ package body Raylib_Ada is
             Convention    => C,
             External_Name => "IsKeyPressed";
 
-      Result : Boolean := Boolean (C_Is_Key_Pressed (Key));
+      Result : constant Boolean := Boolean (C_Is_Key_Pressed (Key));
    begin
       return Result;
    end Is_Key_Pressed;
@@ -378,7 +374,7 @@ package body Raylib_Ada is
             Convention    => C,
             External_Name => "IsKeyPressedRepeat";
 
-      Result : Boolean := Boolean (C_Is_Key_Pressed_Repeat (Key));
+      Result : constant Boolean := Boolean (C_Is_Key_Pressed_Repeat (Key));
    begin
       return Result;
    end Is_Key_Pressed_Repeat;
@@ -391,7 +387,7 @@ package body Raylib_Ada is
             Convention    => C,
             External_Name => "IsKeyDown";
 
-      Result : Boolean := Boolean (C_Is_Key_Down (Key));
+      Result : constant Boolean := Boolean (C_Is_Key_Down (Key));
    begin
       return Result;
    end Is_Key_Down;
@@ -404,7 +400,7 @@ package body Raylib_Ada is
             Convention    => C,
             External_Name => "IsKeyReleased";
 
-      Result : Boolean := Boolean (C_Is_Key_Released (Key));
+      Result : constant Boolean := Boolean (C_Is_Key_Released (Key));
    begin
       return Result;
    end Is_Key_Released;
@@ -417,7 +413,7 @@ package body Raylib_Ada is
             Convention    => C,
             External_Name => "IsKeyUp";
 
-      Result : Boolean := Boolean (C_Is_Key_Up (Key));
+      Result : constant Boolean := Boolean (C_Is_Key_Up (Key));
    begin
       return Result;
    end Is_Key_Up;
@@ -445,7 +441,7 @@ package body Raylib_Ada is
             Convention    => C,
             External_Name => "IsGamepadAvailable";
 
-      Result : Boolean := Boolean (C_Is_Gamepad_Available (Gamepad)); 
+      Result : constant Boolean := Boolean (C_Is_Gamepad_Available (Gamepad)); 
    begin
       return Result;
    end Is_Gamepad_Available;
@@ -474,7 +470,7 @@ package body Raylib_Ada is
             Convention    => C,
             External_Name => "IsGamepadButtonPressed";
 
-      Result : Boolean := 
+      Result : constant Boolean := 
          Boolean (C_Is_Gamepad_Button_Pressed (Gamepad, Button));
    begin
       return Result;
@@ -490,7 +486,8 @@ package body Raylib_Ada is
             Convention    => C,
             External_Name => "IsGamepadButtonDown";
 
-      Result : Boolean := Boolean (C_Is_Gamepad_Button_Down (Gamepad, Button));
+      Result : constant Boolean := 
+         Boolean (C_Is_Gamepad_Button_Down (Gamepad, Button));
    begin
       return Result;
    end Is_Gamepad_Button_Down;
@@ -505,7 +502,7 @@ package body Raylib_Ada is
             Convention    => C,
             External_Name => "IsGamepadButtonReleased";
 
-      Result : Boolean := 
+      Result : constant Boolean := 
          Boolean (C_Is_Gamepad_Button_Released (Gamepad, Button));
    begin
       return Result;
@@ -521,7 +518,8 @@ package body Raylib_Ada is
             Convention    => C,
             External_Name => "IsGamepadButtonUp";
 
-      Result : Boolean := Boolean (C_Is_Gamepad_Button_Up (Gamepad, Button));
+      Result : constant Boolean := 
+         Boolean (C_Is_Gamepad_Button_Up (Gamepad, Button));
    begin
       return Result;
    end Is_Gamepad_Button_Up;
@@ -536,9 +534,9 @@ package body Raylib_Ada is
             External_Name => "SetGamepadMappings";
 
       C_Mappings : C.Strings.chars_ptr := C.Strings.New_String (Mappings);
-      Result     : C_Int                 := C_Set_Gamepad_Mappings (C_Mappings);
+      Result     : C_Int               := C_Set_Gamepad_Mappings (C_Mappings);
    begin
-      Free (C_Mappings);
+      C.Strings.Free (C_Mappings);
       return Result;
    end Set_Gamepad_Mappings;
 
@@ -552,7 +550,8 @@ package body Raylib_Ada is
             Convention    => C,
             External_Name => "IsMouseButtonPressed";
 
-      Result : Boolean := Boolean (C_Is_Mouse_Button_Pressed (Button));
+      Result : constant Boolean := 
+         Boolean (C_Is_Mouse_Button_Pressed (Button));
    begin
       return Result;
    end Is_Mouse_Button_Pressed;
@@ -565,7 +564,7 @@ package body Raylib_Ada is
             Convention    => C,
             External_Name => "IsMouseButtonDown";
 
-      Result : Boolean := Boolean (C_Is_Mouse_Button_Down (Button));
+      Result : constant Boolean := Boolean (C_Is_Mouse_Button_Down (Button));
    begin
       return Result;
    end Is_Mouse_Button_Down;
@@ -579,7 +578,8 @@ package body Raylib_Ada is
             Convention    => C,
             External_Name => "IsMouseButtonReleased";
 
-      Result : Boolean := Boolean (C_Is_Mouse_Button_Released (Button));
+      Result : constant Boolean := 
+         Boolean (C_Is_Mouse_Button_Released (Button));
    begin
       return Result;
    end Is_Mouse_Button_Released;
@@ -592,158 +592,8 @@ package body Raylib_Ada is
             Convention    => C,
             External_Name => "IsMouseButtonUp";
 
-      Result : Boolean := Boolean (C_Is_Mouse_Button_Up (Button));
+      Result : constant Boolean := Boolean (C_Is_Mouse_Button_Up (Button));
    begin
       return Result;
    end Is_Mouse_Button_Up;
-
-
-   package body Textures is
-        --/////////////////////////////////////////////////////////////////////////////
-        -- Image loading functions
-        -- NOTE: These functions do not require GPU access
-        --/////////////////////////////////////////////////////////////////////////////
-        -- Load image from file C_Into CPU memory (RAM)
-        function Load_Image (File_Name : String) return Image 
-        is
-            function LoadImage (File_Name : chars_ptr) return Image
-                with
-                    Import        => true,
-                    Convention    => C,
-                    External_Name => "LoadImage";
-
-            C_File_Name : chars_ptr := New_String (File_Name);
-            Img         : Image     := LoadImage (C_File_Name);
-        begin
-            Free (C_File_Name);
-            return Img;
-        end Load_Image;
-    
-        -- Load image from RAW file data
-        function Load_Image_Raw (File_Name : String; Width, Height, Format, Header_Size : C_Int) return Image 
-        is
-            function LoadImageRaw (File_Name : chars_ptr; Width, Height, Format, Header_Size : C_Int) return Image
-                with
-                    Import        => true,
-                    Convention    => C,
-                    External_Name => "LoadImageRaw";
-            
-            C_File_Name : chars_ptr := New_String (File_Name);
-            Img         : Image     := LoadImageRaw (C_File_Name, Width, Height, Format, Header_Size);
-        begin
-            Free (C_File_Name);
-            return Img;
-        end Load_Image_Raw;
-        
-        -- Load image sequence from file (frames appended to image.data)
-        function Load_Image_Anim (File_Name : String; Frames : access C_Int) return Image is
-            function LoadImageAnim (File_Name : chars_ptr; Frames : access C_Int) return Image
-                with
-                    Import        => true,
-                    Convention    => C,
-                    External_Name => "LoadImageAnim";
-            
-            C_File_Name : chars_ptr := New_String (File_Name);
-            Img         : Image     := LoadImageAnim (C_File_Name, Frames);
-        begin
-            Free (C_File_Name);
-            return Img;
-        end Load_Image_Anim;
-
-        -- Load image sequence from memory buffer        
-        function Load_Image_Anim_From_Memory 
-            (File_Type : String; 
-             File_Data : access unsigned_char; 
-             Data_Size : C_Int; 
-             Frames : access C_Int) return Image is
-            function LoadImageAnimFromMemory 
-                (File_Type : chars_ptr; 
-                 File_Data : access unsigned_char; 
-                 Data_Size : C_Int; 
-                 Frames : access C_Int) return Image
-                with
-                    Import        => true,
-                    Convention    => C,
-                    External_Name => "LoadImageAnimFromMemory";
-   
-            C_File_Type : chars_ptr := New_String (File_Type);
-            Img         : Image     := LoadImageAnimFromMemory (C_File_Type, File_Data, Data_Size, Frames);
-        begin
-            Free (C_File_Type);
-            return Img;
-        end Load_Image_Anim_From_Memory;
-
-        -- Load image from memory buffer, fileType refers to extension: i.e. '.png'
-        function Load_Image_From_Memory (File_Type : String; File_Data : access unsigned_char; Data_Size : C_Int) return Image is
-            function LoadImageFromMemory (File_Type : chars_ptr; File_Data : access unsigned_char; Data_Size : C_Int) return Image 
-                with 
-                    Import        => true,
-                    Convention    => C,
-                    External_Name => "LoadImageFromMemory";
-
-            C_File_Type : chars_ptr := New_String (File_Type);
-            Img         : Image     := LoadImageFromMemory (C_File_Type, File_Data, Data_Size);
-        begin
-            Free (C_File_Type);
-            return Img;
-        end Load_Image_From_Memory;
-
-        -- Check if an image is valid (data and parameters)
-        function Is_Image_Valid (Img : Image) return Boolean is
-            function IsImageValid (Img : Image) return C.C_bool
-                with 
-                    Import        => true,
-                    Convention    => C,
-                    External_Name => "IsImageValid";
-
-            Result : Boolean := Boolean (IsImageValid (Img));
-        begin
-            return Result;
-        end Is_Image_Valid;
-
-        -- Export image data to file, returns true on success
-        function Export_Image (Img : Image; File_Name : String) return Boolean is
-            function ExportImage (Img : Image; File_Name : chars_ptr) return C.C_bool
-                with 
-                    Import        => true,
-                    Convention    => C,
-                    External_Name => "ExportImage";
-            
-            C_File_Name : chars_ptr := New_String (File_Name);
-            Result      : Boolean   := Boolean (ExportImage (Img, C_File_Name));
-        begin
-            Free (C_File_Name);
-            return Result;
-        end Export_Image;
-
-        -- Export image to memory buffer
-        function Export_Image_To_Memory (Img : Image; File_Type : String; File_Size : access C_Int) return access unsigned_char is
-            function ExportImageToMemory (Img : Image; File_Type : chars_ptr; File_Size : access C_Int) return access unsigned_char
-                with
-                    Import        => true,
-                    Convention    => C,
-                    External_Name => "ExportImageToMemory";
-
-            C_File_Type : chars_ptr            := New_String (File_Type);
-            Result      : access unsigned_char := ExportImageToMemory (Img, C_File_Type, File_Size);
-        begin
-            Free (C_File_Type);
-            return Result;
-        end Export_Image_To_Memory;
-
-        -- Export image as code file defining an array of bytes, returns true on success
-        function Export_Image_As_Code (Img : Image; File_Name : String) return Boolean is
-            function ExportImageAsCode (Img : Image; File_Name : chars_ptr) return C.C_bool
-                with
-                    Import        => true,
-                    Convention    => C,
-                    External_Name => "ExportImageAsCode";
-
-            C_File_Name : chars_ptr := New_String (File_Name);
-            Result      : Boolean   := Boolean (ExportImageAsCode (Img, C_File_Name));
-        begin
-            Free (C_File_Name);
-            return Result;
-        end Export_Image_As_Code;
-    end Textures;
 end Raylib_Ada;

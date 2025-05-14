@@ -17,16 +17,16 @@ RV NO_IMPLICIT_LOOPS
 RV NO_ELABORATION_CODE
 RV NO_OBSOLESCENT_FEATURES
 
-U ada_main%b		b__core_2d_camera.adb	3ec02e51 OO PK IL
+U ada_main%b		b__core_2d_camera.adb	a64a9924 OO PK IL
 Z system%s		system.ads		system.ali
 
-U ada_main%s		b__core_2d_camera.ads	9c0b27e5 EE NE OO PK IL
+U ada_main%s		b__core_2d_camera.ads	f886e87c EE NE OO PK IL
 W system%s		system.ads		system.ali
 W system.parameters%s	s-parame.adb		s-parame.ali
 W system.secondary_stack%s  s-secsta.adb	s-secsta.ali
 
-D b__core_2d_camera.ads	20250513190508 ea36c90e ada_main%s
-D b__core_2d_camera.adb	20250513190508 d4f6e75f ada_main%b
+D b__core_2d_camera.ads	20250514184120 8ebb0697 ada_main%s
+D b__core_2d_camera.adb	20250514184120 28f19fb3 ada_main%b
 D system.ads		20250427141335 14286b0f system%s
 D s-parame.ads		20250427141335 3597fc11 system.parameters%s
 D s-secsta.ads		20250427141335 578279f5 system.secondary_stack%s
@@ -174,24 +174,24 @@ X 1 b__core_2d_camera.ads
 261m4*u00110{42M9} 262r22
 263m4*u00111{42M9} 264r22
 X 2 b__core_2d_camera.adb
-9i4 E075{short_integer} 9m46 9r46 156m7 156r15
+9i4 E077{short_integer} 9m46 9r46 156m7 156r15
 10i4 E010{short_integer} 10m46 10r46 162m7 162r15
-11i4 E016{short_integer} 11m46 11r46 159m7 159r15
-12i4 E027{short_integer} 12m46 12r46 134m7 134r15
-13i4 E043{short_integer} 13m46 13r46 136m7 136r15
-14i4 E070{short_integer} 14m46 14r46 138m7 138r15
-15i4 E034{short_integer} 15m46 15r46 140m7 140r15
-16i4 E055{short_integer} 16m46 16r46 142m7 142r15
-17i4 E057{short_integer} 17m46 17r46 144m7 144r15
-18i4 E060{short_integer} 18m46 18r46 146m7 146r15
-19i4 E008{short_integer} 19m46 19r46 148m7 148r15
-20i4 E028{short_integer} 20m46 20r46 150m7 150r15
-21i4 E086{short_integer} 21m46 21r46 152m7 152r15
-22i4 E050{short_integer} 22m46 22r46 154m7 154r15
-23i4 E023{short_integer} 23m46 23r46 158m7 158r15
-24i4 E042{short_integer} 24m46 24r46 161m7 161r15
-25i4 E109{short_integer} 25m46 25r46 164m7 164r15
-26i4 E105{short_integer} 26m46 26r46 166m7 166r15
+11i4 E015{short_integer} 11m46 11r46 159m7 159r15
+12i4 E026{short_integer} 12m46 12r46 134m7 134r15
+13i4 E042{short_integer} 13m46 13r46 136m7 136r15
+14i4 E072{short_integer} 14m46 14r46 138m7 138r15
+15i4 E033{short_integer} 15m46 15r46 140m7 140r15
+16i4 E057{short_integer} 16m46 16r46 142m7 142r15
+17i4 E059{short_integer} 17m46 17r46 144m7 144r15
+18i4 E062{short_integer} 18m46 18r46 146m7 146r15
+19i4 E047{short_integer} 19m46 19r46 148m7 148r15
+20i4 E027{short_integer} 20m46 20r46 150m7 150r15
+21i4 E088{short_integer} 21m46 21r46 152m7 152r15
+22i4 E052{short_integer} 22m46 22r46 154m7 154r15
+23i4 E022{short_integer} 23m46 23r46 158m7 158r15
+24i4 E041{short_integer} 24m46 24r46 161m7 161r15
+25i4 E107{short_integer} 25m46 25r46 164m7 164r15
+26i4 E109{short_integer} 26m46 26r46 166m7 166r15
 27i4 E005{short_integer} 27m46 27r46 167m7 167r15
 29a4 Sec_Default_Sized_Stacks(5|43R9) 125m32 125r32
 31a4 Local_Priority_Specific_Dispatching{string} 113r9

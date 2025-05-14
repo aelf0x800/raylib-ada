@@ -1,12 +1,10 @@
-with Ada.Characters.Latin_1;
 with Interfaces.C;
 with Interfaces.C.Strings;
 with System;
 
 package Raylib_Ada is
-   use Ada.Characters.Latin_1;
-   use Interfaces.C;
-   use Interfaces.C.Strings;
+   package C renames Interfaces.C;
+   
    use System;
 
    Version_Major : Integer := 5;
@@ -19,12 +17,7 @@ package Raylib_Ada is
    --//////////////////////////////////////////////////////////////////////////
    subtype C_Int is Integer
       with Dynamic_Predicate => 
-         C_Int >= Integer (int'First) and then C_Int <= Integer (int'Last);
-
-   --subtype C_UInt is Positive
-   --   with Dynamic_Predicate => 
-    --     C_UInt >= Positive (unsigned'First) and then 
-    --     C_UInt <= Positive (unsigned'Last);
+         C_Int >= Integer (C.int'First) and then C_Int <= Integer (C.int'Last);
 
    --//////////////////////////////////////////////////////////////////////////
    -- Enumerators Definition
@@ -109,7 +102,7 @@ package Raylib_Ada is
        Key_Caps_Lock,
        Key_Scroll_Lock,
        Key_Num_Lock,
-       Key_PrC_Int_Screen,
+       Key_Print_Screen,
        Key_Pause,
        Key_F1,
        Key_F2,
@@ -228,7 +221,7 @@ package Raylib_Ada is
        Key_Caps_Lock    => 280,
        Key_Scroll_Lock  => 281,
        Key_Num_Lock     => 282,
-       Key_PrC_Int_Screen => 283,
+       Key_Print_Screen => 283,
        Key_Pause        => 284,
        Key_F1           => 290,
        Key_F2           => 291,
@@ -418,7 +411,7 @@ package Raylib_Ada is
 
    -- Color, 4 components, R8G8B8A8 (32-bit)
    type Color is record
-      R, G, B, A : unsigned_char; -- Color red, green, blue and alpha values
+      R, G, B, A : C.unsigned_char; -- Color red, green, blue and alpha values
    end record
       with Convention => C_Pass_By_Copy;
 
@@ -440,7 +433,7 @@ package Raylib_Ada is
 
    -- Texture_2D, tex data stored in GPU memory (VRAM)
    type Texture_2D is record
-      ID            : unsigned;     -- OpenGL texture ID
+      ID            : C.unsigned;     -- OpenGL texture ID
       Width, Height : C_Int;        -- Texture base width and height
       Mipmaps       : C_Int;        -- Mipmap levels, 1 by default
       Format        : Pixel_Format; -- Data format (Pixel_Format type)
@@ -449,7 +442,7 @@ package Raylib_Ada is
 
    -- Render_Texture_2D, FBO for texture rendering
    type Render_Texture_2D is record
-      ID      : unsigned;   -- OpenGL framebuffer object ID
+      ID      : C.unsigned;   -- OpenGL framebuffer object ID
       Texture : Texture_2D; -- Color buffer attachment texture
       Depth   : Texture_2D; -- Depth buffer attachment texture
    end record
@@ -513,26 +506,26 @@ package Raylib_Ada is
       Texture_Coords2 : access Float;         -- Vertex texture second coordinates (UV - 2 components per vertex) (shader-location = 5)
       Normals         : access Float;         -- Vertex normals (XYZ - 3 components per vertex) (shader-location = 2)
       Tangents        : access Float;         -- Vertex tangents (XYZW - 4 components per vertex) (shader-location = 3)
-      Colors          : access unsigned_char; -- Vertex colors (RGBA - 4 components per vertex) (shader-location = 3)
-      Indicies        : access unsigned_char; -- Vertex indicies (in case vertex data comes indexed)
+      Colors          : access C.unsigned_char; -- Vertex colors (RGBA - 4 components per vertex) (shader-location = 3)
+      Indicies        : access C.unsigned_char; -- Vertex indicies (in case vertex data comes indexed)
 
       -- Animation vertex data
       Anim_Verticies : access Float;         -- Animated vertex positions (after bones transformations)
       Anim_Normals   : access Float;         -- Animated normals (after bones transformations)
-      Bone_IDs       : access unsigned_char; -- Vertex bone IDs, max 255 bone IDs, up to 4 bones influence by vertex (skinning) (shader-location = 6)
+      Bone_IDs       : access C.unsigned_char; -- Vertex bone IDs, max 255 bone IDs, up to 4 bones influence by vertex (skinning) (shader-location = 6)
       Bone_Weights   : access Float;         -- Vertex bone weight, up to 4 bones influence by vertex (skinning) (shader-location = 7)
       Bone_Matricies : access Matrix;        -- Bones animated transformations matricies
       Bone_Count     : C_Int;                  -- Number of bones
 
       -- OpenGL identifiers
-      VAO_ID : unsigned; -- OpenGL Vertex Array Object ID
-      VBO_ID : unsigned; -- OpenGL Vertex Buffer Objects ID (default vertex data)
+      VAO_ID : C.unsigned; -- OpenGL Vertex Array Object ID
+      VBO_ID : C.unsigned; -- OpenGL Vertex Buffer Objects ID (default vertex data)
    end record
       with Convention => C_Pass_By_Copy;
 
    -- Shader
    type Shader is record
-      ID   : unsigned;     -- Shader program ID
+      ID   : C.unsigned;     -- Shader program ID
       Locs : access C_Int; -- Shader locations array
    end record
       with Convention => C_Pass_By_Copy;
@@ -563,7 +556,7 @@ package Raylib_Ada is
       with Convention => C_Pass_By_Copy;
 
    -- Bone_Info, skeletal animation bone
-   type Bone_Info_Name is Array (0 .. 31) of char;
+   type Bone_Info_Name is Array (0 .. 31) of Character;
    type Bone_Info is record 
       Name   : Bone_Info_Name; -- Bone name
       Parent : C_Int;          -- Bone parent
@@ -588,7 +581,7 @@ package Raylib_Ada is
       with Convention => C_Pass_By_Copy;
 
    -- Model_Animation
-   type Model_Animation_Name is Array (0 .. 31) of char;
+   type Model_Animation_Name is Array (0 .. 31) of Character;
    type Model_Animation is record 
       Bone_Count  : C_Int;                -- Number of bones
       Frame_Count : C_Int;                -- Number of animation frames
@@ -615,10 +608,10 @@ package Raylib_Ada is
 
    -- Wave, audio wave data
    type Wave is record 
-      Frame_Count : unsigned;       -- Total number of frames (considering channels)
-      Sample_Rate : unsigned;       -- Frequency (samples per second)
-      Sample_Size : unsigned;       -- Bit depth (bits per sample): 8, 16, 32 (24 not supported) 
-      Channels    : unsigned;       -- Number of channels (1-mono, 2-stereo, ...)
+      Frame_Count : C.unsigned;       -- Total number of frames (considering channels)
+      Sample_Rate : C.unsigned;       -- Frequency (samples per second)
+      Sample_Size : C.unsigned;       -- Bit depth (bits per sample): 8, 16, 32 (24 not supported) 
+      Channels    : C.unsigned;       -- Number of channels (1-mono, 2-stereo, ...)
       Data        : System.Address; -- Buffer data poC_Inter
    end record 
       with Convention => C_Pass_By_Copy;
@@ -628,23 +621,23 @@ package Raylib_Ada is
       Buffer    : System.Address; -- PoC_Inter to C_Internal data used by the audio system
       Processor : System.Address; -- PoC_Inter to C_Internal data processor, useful for audio effects
       
-      Sample_Rate : unsigned; -- Frequency (samples per second)
-      Sample_Size : unsigned; -- Bit depth (bits per sample): 8, 16, 32 (24 not supported) 
-      Channels    : unsigned; -- Number of channels (1-mono, 2-stereo, ...)
+      Sample_Rate : C.unsigned; -- Frequency (samples per second)
+      Sample_Size : C.unsigned; -- Bit depth (bits per sample): 8, 16, 32 (24 not supported) 
+      Channels    : C.unsigned; -- Number of channels (1-mono, 2-stereo, ...)
    end record 
       with Convention => C_Pass_By_Copy;
 
    -- Sound
    type Sound is record
       Stream      : Audio_Stream; -- Audio stream
-      Frame_Count : unsigned;     -- Total number of frames (considering channels)
+      Frame_Count : C.unsigned;     -- Total number of frames (considering channels)
    end record
       with Convention => C_Pass_By_Copy;
 
    -- Music, audio stream, anything longer than ~10 seconds should be streamed
    type Music is record 
       Stream      : Audio_Stream; -- Audio stream
-      Frame_Count : unsigned;     -- Total number of frames (considering channels)
+      Frame_Count : C.unsigned;     -- Total number of frames (considering channels)
       -- TODO : looping bool      -- Music looping enable
 
       Ctx_Type : C_Int;          -- Type of music context (audio filetype)
@@ -657,25 +650,25 @@ package Raylib_Ada is
 
    -- File path list
    type File_Path_List is record 
-      Capacity : unsigned;         -- Filepaths max entrires
-      Count    : unsigned;         -- Filepaths entries count
-      Paths    : access chars_ptr; -- Filepaths entries
+      Capacity : C.unsigned;                   -- Filepaths max entrires
+      Count    : C.unsigned;                   -- Filepaths entries count
+      Paths    : access C.Strings.chars_ptr; -- Filepaths entries
    end record 
       with Convention => C_Pass_By_Copy;
 
    -- Automation event
    type Automation_Event_Params is Array (0 .. 3) of C_Int;
    type Automation_Event is record 
-      Frame      : unsigned;                -- Event frame
-      Event_Type : unsigned;                -- Event type (Automation_Event_type)
+      Frame      : C.unsigned;                -- Event frame
+      Event_Type : C.unsigned;                -- Event type (Automation_Event_type)
       Params     : Automation_Event_Params; -- Event parameters (if any)
    end record 
       with Convention => C_Pass_By_Copy;
 
    -- Automation event list
    type Automation_Event_List is record 
-      Capacity : unsigned;                -- Event max entries (MAX_AUTOMATION_EVENTS)
-      Count    : unsigned;                -- Event entries count
+      Capacity : C.unsigned;                -- Event max entries (MAX_AUTOMATION_EVENTS)
+      Count    : C.unsigned;                -- Event entries count
       Events   : access Automation_Event; -- Event entries
    end record 
       with Convention => C_Pass_By_Copy;
@@ -739,15 +732,15 @@ package Raylib_Ada is
    -- Check if window has been resized last frame
    function Is_Window_Resized return Boolean;
    -- Check if one specific window flag is enabled
-   function Is_Window_State (Flag : unsigned) return Boolean;
+   function Is_Window_State (Flag : C.unsigned) return Boolean;
    -- Set window configuration state using flags
-   procedure Set_Window_State (Flags : unsigned) 
+   procedure Set_Window_State (Flags : C.unsigned) 
       with 
          Import        => true, 
          Convention    => C, 
          External_Name => "SetWindowState";
    -- Clear window configuration state flags
-   procedure Clear_Window_State (Flags : unsigned) 
+   procedure Clear_Window_State (Flags : C.unsigned) 
       with 
          Import        => true, 
          Convention    => C, 
@@ -1066,7 +1059,7 @@ package Raylib_Ada is
          Convention    => C,
          External_Name => "GetFrameTime";
    -- Get time elapsed since InitWindow()
-   function Get_Time return Double
+   function Get_Time return C.double
       with
          Import        => true,
          Convention    => C,
@@ -1100,7 +1093,7 @@ package Raylib_Ada is
          Convention    => C,
          External_Name => "PollInputEvents";
    -- Wait for some time (halt program execution)
-   procedure Wait_Time (Seconds : Double)
+   procedure Wait_Time (Seconds : C.double)
       with
          Import        => true,
          Convention    => C,
@@ -1110,7 +1103,7 @@ package Raylib_Ada is
    -- Random values generation functions and procedures
    --//////////////////////////////////////////////////////////////////////////
    -- Set the seed for the random number generator
-   procedure Set_Random_Seed (Seed : unsigned)
+   procedure Set_Random_Seed (Seed : C.unsigned)
       with
          Import        => true,
          Convention    => C,
@@ -1123,7 +1116,7 @@ package Raylib_Ada is
          External_Name => "GetRandomValue";
    -- Load random values sequence, no values repeated
    function Load_Random_Sequence 
-      (Count : unsigned; Min, Max : C_Int) return access C_Int
+      (Count : C.unsigned; Min, Max : C_Int) return access C_Int
       with
          Import        => true,
          Convention    => C,
@@ -1141,7 +1134,7 @@ package Raylib_Ada is
    -- Takes a screenshot of current screen (filename extension defines format)
    procedure Take_Screenshot (File_Name : String);
    -- Setup init configuration flags (view FLAGS)
-   procedure Set_Config_Flags (Flags : unsigned)
+   procedure Set_Config_Flags (Flags : C.unsigned)
       with
          Import        => true,
          Convention    => C,
@@ -1764,238 +1757,235 @@ package Raylib_Ada is
       -- TODO : CheckCollisionLines
       -- TODO : GetCollisionRec
 
-   package Input is 
-   end Input;
+--  package Textures is
+--     --///////////////////////////////////////////////////////////////////////
+--     -- Image loading functions
+--     -- NOTE: These functions do not require GPU access
+--     --///////////////////////////////////////////////////////////////////////
+--     -- Load image from file C_Into CPU memory (RAM)
+--     function Load_Image (File_Name : String) return Image;
+--     -- Load image from RAW file data
+--     function Load_Image_Raw 
+--        (File_Name : String; Width, Height, Format, Header_Size : C_Int) return Image;
+--     -- Load image sequence from file (frames appended to image.data)
+--     function Load_Image_Anim (File_Name : String; Frames : access C_Int) return Image;
+--     -- Load image sequence from memory buffer      
+--     function Load_Image_Anim_From_Memory 
+--        (File_Type : String; 
+--         File_Data : access C.unsigned_char; 
+--         Data_Size : C_Int; 
+--         Frames : access C_Int) return Image; 
+--     -- Load image from memory buffer, fileType refers to extension: i.e. '.png'
+--     function Load_Image_From_Memory 
+--        (File_Type : String; File_Data : access C.unsigned_char; Data_Size : C_Int) return Image;
+--     -- Load image from GPU texture data
+--     function Load_Image_From_Texture_2D(Texture : Texture_2D) return Image
+--        with 
+--           Import        => true,
+--           Convention    => C,
+--           External_Name => "LoadImageFromTexture";
+--     -- Load image from screen buffer and (screenshot)
+--     function Load_Image_From_Screen return Image
+--        with 
+--           Import        => true,
+--           Convention    => C,
+--           External_Name => "LoadImageFromScreen";
+--     -- Check if an image is valid (data and parameters)
+--     function Is_Image_Valid(Img : Image) return Boolean;
+--     -- Unload image from CPU memory (RAM)
+--     procedure Unload_Image (Img : Image)
+--        with 
+--           Import        => true,
+--           Convention    => C,
+--           External_Name => "UnloadImage";
+--     -- Export image data to file, returns true on success
+--     function Export_Image (Img : Image; File_Name : String) return Boolean;
+--     -- Export image to memory buffer
+--     function Export_Image_To_Memory (Img : Image; File_Type : String; File_Size : access C_Int) return access C.unsigned_char;
+--     -- Export image as code file defining an array of bytes, returns true on success
+--     function Export_Image_As_Code (Img : Image; File_Name : String) return Boolean;
 
-   package Textures is
-      --///////////////////////////////////////////////////////////////////////
-      -- Image loading functions
-      -- NOTE: These functions do not require GPU access
-      --///////////////////////////////////////////////////////////////////////
-      -- Load image from file C_Into CPU memory (RAM)
-      function Load_Image (File_Name : String) return Image;
-      -- Load image from RAW file data
-      function Load_Image_Raw 
-         (File_Name : String; Width, Height, Format, Header_Size : C_Int) return Image;
-      -- Load image sequence from file (frames appended to image.data)
-      function Load_Image_Anim (File_Name : String; Frames : access C_Int) return Image;
-      -- Load image sequence from memory buffer      
-      function Load_Image_Anim_From_Memory 
-         (File_Type : String; 
-          File_Data : access unsigned_char; 
-          Data_Size : C_Int; 
-          Frames : access C_Int) return Image; 
-      -- Load image from memory buffer, fileType refers to extension: i.e. '.png'
-      function Load_Image_From_Memory 
-         (File_Type : String; File_Data : access unsigned_char; Data_Size : C_Int) return Image;
-      -- Load image from GPU texture data
-      function Load_Image_From_Texture_2D(Texture : Texture_2D) return Image
-         with 
-            Import        => true,
-            Convention    => C,
-            External_Name => "LoadImageFromTexture";
-      -- Load image from screen buffer and (screenshot)
-      function Load_Image_From_Screen return Image
-         with 
-            Import        => true,
-            Convention    => C,
-            External_Name => "LoadImageFromScreen";
-      -- Check if an image is valid (data and parameters)
-      function Is_Image_Valid(Img : Image) return Boolean;
-      -- Unload image from CPU memory (RAM)
-      procedure Unload_Image (Img : Image)
-         with 
-            Import        => true,
-            Convention    => C,
-            External_Name => "UnloadImage";
-      -- Export image data to file, returns true on success
-      function Export_Image (Img : Image; File_Name : String) return Boolean;
-      -- Export image to memory buffer
-      function Export_Image_To_Memory (Img : Image; File_Type : String; File_Size : access C_Int) return access unsigned_char;
-      -- Export image as code file defining an array of bytes, returns true on success
-      function Export_Image_As_Code (Img : Image; File_Name : String) return Boolean;
+--     --///////////////////////////////////////////////////////////////////////
+--     -- Image generation functions
+--     --///////////////////////////////////////////////////////////////////////
+--     -- TODO : Image GenImageColor(int width, C_Int height, Color color);                                 // Generate image: plain color
+--     -- TODO : Image GenImageGradientLinear(int width, C_Int height, C_Int direction, Color start, Color end);      // Generate image: linear gradient, direction in degrees [0..360], 0=Vertical gradient
+--     -- TODO : Image GenImageGradientRadial(int width, C_Int height, float density, Color inner, Color outer);     // Generate image: radial gradient
+--     -- TODO : Image GenImageGradientSquare(int width, C_Int height, float density, Color inner, Color outer);     // Generate image: square gradient
+--     -- TODO : Image GenImageChecked(int width, C_Int height, C_Int checksX, C_Int checksY, Color col1, Color col2);   // Generate image: checked
+--     -- TODO : Image GenImageWhiteNoise(int width, C_Int height, float factor);                            // Generate image: white noise
+--     -- TODO : Image GenImagePerlinNoise(int width, C_Int height, C_Int offsetX, C_Int offsetY, float scale);         // Generate image: perlin noise
+--     -- TODO : Image GenImageCellular(int width, C_Int height, C_Int tileSize);                              // Generate image: cellular algorithm, bigger tileSize means bigger cells
+--     -- TODO : Image GenImageText(int width, C_Int height, const char *text);                              // Generate image: grayscale image from text data
 
-      --///////////////////////////////////////////////////////////////////////
-      -- Image generation functions
-      --///////////////////////////////////////////////////////////////////////
-      -- TODO : Image GenImageColor(int width, C_Int height, Color color);                                 // Generate image: plain color
-      -- TODO : Image GenImageGradientLinear(int width, C_Int height, C_Int direction, Color start, Color end);      // Generate image: linear gradient, direction in degrees [0..360], 0=Vertical gradient
-      -- TODO : Image GenImageGradientRadial(int width, C_Int height, float density, Color inner, Color outer);     // Generate image: radial gradient
-      -- TODO : Image GenImageGradientSquare(int width, C_Int height, float density, Color inner, Color outer);     // Generate image: square gradient
-      -- TODO : Image GenImageChecked(int width, C_Int height, C_Int checksX, C_Int checksY, Color col1, Color col2);   // Generate image: checked
-      -- TODO : Image GenImageWhiteNoise(int width, C_Int height, float factor);                            // Generate image: white noise
-      -- TODO : Image GenImagePerlinNoise(int width, C_Int height, C_Int offsetX, C_Int offsetY, float scale);         // Generate image: perlin noise
-      -- TODO : Image GenImageCellular(int width, C_Int height, C_Int tileSize);                              // Generate image: cellular algorithm, bigger tileSize means bigger cells
-      -- TODO : Image GenImageText(int width, C_Int height, const char *text);                              // Generate image: grayscale image from text data
+--     --///////////////////////////////////////////////////////////////////////
+--     -- Image manipulation functions
+--     --///////////////////////////////////////////////////////////////////////
+--     -- TODO : Image ImageCopy(Image image);                                                     // Create an image duplicate (useful for transformations)
+--     -- TODO : Image ImageFromImage(Image image, Rectangle rec);                                      // Create an image from another image piece
+--     -- TODO : Image ImageFromChannel(Image image, C_Int selectedChannel);                                // Create an image from a selected channel of another image (GRAYSCALE)
+--     -- TODO : Image ImageText(const char *text, C_Int fontSize, Color color);                             // Create an image from text (default font)
+--     -- TODO : Image ImageTextEx(Font font, const char *text, float fontSize, float spacing, Color tint);       // Create an image from text (custom sprite font)
+--     -- TODO : void ImageFormat(Image *image, C_Int newFormat);                                        // Convert image data to desired format
+--     -- TODO : void ImageToPOT(Image *image, Color fill);                                           // Convert image to POT (power-of-two)
+--     -- TODO : void ImageCrop(Image *image, Rectangle crop);                                         // Crop an image to a defined rectangle
+--     -- TODO : void ImageAlphaCrop(Image *image, float threshold);                                    // Crop image depending on alpha value
+--     -- TODO : void ImageAlphaClear(Image *image, Color color, float threshold);                          // Clear alpha channel to desired color
+--     -- TODO : void ImageAlphaMask(Image *image, Image alphaMask);                                    // Apply alpha mask to image
+--     -- TODO : void ImageAlphaPremultiply(Image *image);                                            // Premultiply alpha channel
+--     -- TODO : void ImageBlurGaussian(Image *image, C_Int blurSize);                                    // Apply Gaussian blur using a box blur approximation
+--     -- TODO : void ImageKernelConvolution(Image *image, const float *kernel, C_Int kernelSize);               // Apply custom square convolution kernel to image
+--     -- TODO : void ImageResize(Image *image, C_Int newWidth, C_Int newHeight);                              // Resize image (Bicubic scaling algorithm)
+--     -- TODO : void ImageResizeNN(Image *image, C_Int newWidth,int newHeight);                             // Resize image (Nearest-Neighbor scaling algorithm)
+--     -- TODO : void ImageResizeCanvas(Image *image, C_Int newWidth, C_Int newHeight, C_Int offsetX, C_Int offsetY, Color fill); // Resize canvas and fill with color
+--     -- TODO : void ImageMipmaps(Image *image);                                                   // Compute all mipmap levels for a provided image
+--     -- TODO : void ImageDither(Image *image, C_Int rBpp, C_Int gBpp, C_Int bBpp, C_Int aBpp);                     // Dither image data to 16bpp or lower (Floyd-Steinberg dithering)
+--     -- TODO : void ImageFlipVertical(Image *image);                                               // Flip image vertically
+--     -- TODO : void ImageFlipHorizontal(Image *image);                                             // Flip image horizontally
+--     -- TODO : void ImageRotate(Image *image, C_Int degrees);                                          // Rotate image by input angle in degrees (-359 to 359)
+--     -- TODO : void ImageRotateCW(Image *image);                                                  // Rotate image clockwise 90deg
+--     -- TODO : void ImageRotateCCW(Image *image);                                                 // Rotate image counter-clockwise 90deg
+--     -- TODO : void ImageColorTint(Image *image, Color color);                                       // Modify image color: tint
+--     -- TODO : void ImageColorInvert(Image *image);                                                // Modify image color: invert
+--     -- TODO : void ImageColorGrayscale(Image *image);                                             // Modify image color: grayscale
+--     -- TODO : void ImageColorContrast(Image *image, float contrast);                                  // Modify image color: contrast (-100 to 100)
+--     -- TODO : void ImageColorBrightness(Image *image, C_Int brightness);                                 // Modify image color: brightness (-255 to 255)
+--     -- TODO : void ImageColorReplace(Image *image, Color color, Color replace);                          // Modify image color: replace color
+--     -- TODO : Color *LoadImageColors(Image image);                                                // Load color data from image as a Color array (RGBA - 32bit)
+--     -- TODO : Color *LoadImagePalette(Image image, C_Int maxPaletteSize, C_Int *colorCount);                   // Load colors palette from image as a Color array (RGBA - 32bit)
+--     -- TODO : void UnloadImageColors(Color *colors);                                              // Unload color data loaded with LoadImageColors()
+--     -- TODO : void UnloadImagePalette(Color *colors);                                             // Unload colors palette loaded with LoadImagePalette()
+--     -- TODO : Rectangle GetImageAlphaBorder(Image image, float threshold);                              // Get image alpha border rectangle
+--     -- TODO : Color GetImageColor(Image image, C_Int x, C_Int y);                                       // Get image pixel color at (x, y) position
 
-      --///////////////////////////////////////////////////////////////////////
-      -- Image manipulation functions
-      --///////////////////////////////////////////////////////////////////////
-      -- TODO : Image ImageCopy(Image image);                                                     // Create an image duplicate (useful for transformations)
-      -- TODO : Image ImageFromImage(Image image, Rectangle rec);                                      // Create an image from another image piece
-      -- TODO : Image ImageFromChannel(Image image, C_Int selectedChannel);                                // Create an image from a selected channel of another image (GRAYSCALE)
-      -- TODO : Image ImageText(const char *text, C_Int fontSize, Color color);                             // Create an image from text (default font)
-      -- TODO : Image ImageTextEx(Font font, const char *text, float fontSize, float spacing, Color tint);       // Create an image from text (custom sprite font)
-      -- TODO : void ImageFormat(Image *image, C_Int newFormat);                                        // Convert image data to desired format
-      -- TODO : void ImageToPOT(Image *image, Color fill);                                           // Convert image to POT (power-of-two)
-      -- TODO : void ImageCrop(Image *image, Rectangle crop);                                         // Crop an image to a defined rectangle
-      -- TODO : void ImageAlphaCrop(Image *image, float threshold);                                    // Crop image depending on alpha value
-      -- TODO : void ImageAlphaClear(Image *image, Color color, float threshold);                          // Clear alpha channel to desired color
-      -- TODO : void ImageAlphaMask(Image *image, Image alphaMask);                                    // Apply alpha mask to image
-      -- TODO : void ImageAlphaPremultiply(Image *image);                                            // Premultiply alpha channel
-      -- TODO : void ImageBlurGaussian(Image *image, C_Int blurSize);                                    // Apply Gaussian blur using a box blur approximation
-      -- TODO : void ImageKernelConvolution(Image *image, const float *kernel, C_Int kernelSize);               // Apply custom square convolution kernel to image
-      -- TODO : void ImageResize(Image *image, C_Int newWidth, C_Int newHeight);                              // Resize image (Bicubic scaling algorithm)
-      -- TODO : void ImageResizeNN(Image *image, C_Int newWidth,int newHeight);                             // Resize image (Nearest-Neighbor scaling algorithm)
-      -- TODO : void ImageResizeCanvas(Image *image, C_Int newWidth, C_Int newHeight, C_Int offsetX, C_Int offsetY, Color fill); // Resize canvas and fill with color
-      -- TODO : void ImageMipmaps(Image *image);                                                   // Compute all mipmap levels for a provided image
-      -- TODO : void ImageDither(Image *image, C_Int rBpp, C_Int gBpp, C_Int bBpp, C_Int aBpp);                     // Dither image data to 16bpp or lower (Floyd-Steinberg dithering)
-      -- TODO : void ImageFlipVertical(Image *image);                                               // Flip image vertically
-      -- TODO : void ImageFlipHorizontal(Image *image);                                             // Flip image horizontally
-      -- TODO : void ImageRotate(Image *image, C_Int degrees);                                          // Rotate image by input angle in degrees (-359 to 359)
-      -- TODO : void ImageRotateCW(Image *image);                                                  // Rotate image clockwise 90deg
-      -- TODO : void ImageRotateCCW(Image *image);                                                 // Rotate image counter-clockwise 90deg
-      -- TODO : void ImageColorTint(Image *image, Color color);                                       // Modify image color: tint
-      -- TODO : void ImageColorInvert(Image *image);                                                // Modify image color: invert
-      -- TODO : void ImageColorGrayscale(Image *image);                                             // Modify image color: grayscale
-      -- TODO : void ImageColorContrast(Image *image, float contrast);                                  // Modify image color: contrast (-100 to 100)
-      -- TODO : void ImageColorBrightness(Image *image, C_Int brightness);                                 // Modify image color: brightness (-255 to 255)
-      -- TODO : void ImageColorReplace(Image *image, Color color, Color replace);                          // Modify image color: replace color
-      -- TODO : Color *LoadImageColors(Image image);                                                // Load color data from image as a Color array (RGBA - 32bit)
-      -- TODO : Color *LoadImagePalette(Image image, C_Int maxPaletteSize, C_Int *colorCount);                   // Load colors palette from image as a Color array (RGBA - 32bit)
-      -- TODO : void UnloadImageColors(Color *colors);                                              // Unload color data loaded with LoadImageColors()
-      -- TODO : void UnloadImagePalette(Color *colors);                                             // Unload colors palette loaded with LoadImagePalette()
-      -- TODO : Rectangle GetImageAlphaBorder(Image image, float threshold);                              // Get image alpha border rectangle
-      -- TODO : Color GetImageColor(Image image, C_Int x, C_Int y);                                       // Get image pixel color at (x, y) position
+--     --///////////////////////////////////////////////////////////////////////
+--     -- Image drawing functions
+--     -- NOTE: Image software-rendering functions (CPU)
+--     --///////////////////////////////////////////////////////////////////////
+--     -- TODO : void ImageClearBackground(Image *dst, Color color);                                    // Clear image background with given color
+--     -- TODO : void ImageDrawPixel(Image *dst, C_Int posX, C_Int posY, Color color);                          // Draw pixel within an image
+--     -- TODO : void ImageDrawPixelV(Image *dst, Vector2 position, Color color);                           // Draw pixel within an image (Vector version)
+--     -- TODO : void ImageDrawLine(Image *dst, C_Int startPosX, C_Int startPosY, C_Int endPosX, C_Int endPosY, Color color); // Draw line within an image
+--     -- TODO : void ImageDrawLineV(Image *dst, Vector2 start, Vector2 end, Color color);                    // Draw line within an image (Vector version)
+--     -- TODO : void ImageDrawLineEx(Image *dst, Vector2 start, Vector2 end, C_Int thick, Color color);           // Draw a line defining thickness within an image
+--     -- TODO : void ImageDrawCircle(Image *dst, C_Int centerX, C_Int centerY, C_Int radius, Color color);            // Draw a filled circle within an image
+--     -- TODO : void ImageDrawCircleV(Image *dst, Vector2 center, C_Int radius, Color color);                  // Draw a filled circle within an image (Vector version)
+--     -- TODO : void ImageDrawCircleLines(Image *dst, C_Int centerX, C_Int centerY, C_Int radius, Color color);        // Draw circle outline within an image
+--     -- TODO : void ImageDrawCircleLinesV(Image *dst, Vector2 center, C_Int radius, Color color);               // Draw circle outline within an image (Vector version)
+--     -- TODO : void ImageDrawRectangle(Image *dst, C_Int posX, C_Int posY, C_Int width, C_Int height, Color color);      // Draw rectangle within an image
+--     -- TODO : void ImageDrawRectangleV(Image *dst, Vector2 position, Vector2 size, Color color);             // Draw rectangle within an image (Vector version)
+--     -- TODO : void ImageDrawRectangleRec(Image *dst, Rectangle rec, Color color);                        // Draw rectangle within an image
+--     -- TODO : void ImageDrawRectangleLines(Image *dst, Rectangle rec, C_Int thick, Color color);               // Draw rectangle lines within an image
+--     -- TODO : void ImageDrawTriangle(Image *dst, Vector2 v1, Vector2 v2, Vector2 v3, Color color);            // Draw triangle within an image
+--     -- TODO : void ImageDrawTriangleEx(Image *dst, Vector2 v1, Vector2 v2, Vector2 v3, Color c1, Color c2, Color c3); // Draw triangle with C_Interpolated colors within an image
+--     -- TODO : void ImageDrawTriangleLines(Image *dst, Vector2 v1, Vector2 v2, Vector2 v3, Color color);        // Draw triangle outline within an image
+--     -- TODO : void ImageDrawTriangleFan(Image *dst, Vector2 *points, C_Int pointCount, Color color);            // Draw a triangle fan defined by points within an image (first vertex is the center)
+--     -- TODO : void ImageDrawTriangleStrip(Image *dst, Vector2 *points, C_Int pointCount, Color color);          // Draw a triangle strip defined by points within an image
+--     -- TODO : void ImageDraw(Image *dst, Image src, Rectangle srcRec, Rectangle dstRec, Color tint);          // Draw a source image within a destination image (tint applied to source)
+--     -- TODO : void ImageDrawText(Image *dst, const char *text, C_Int posX, C_Int posY, C_Int fontSize, Color color);   // Draw text (using default font) within an image (destination)
+--     -- TODO : void ImageDrawTextEx(Image *dst, Font font, const char *text, Vector2 position, float fontSize, float spacing, Color tint); // Draw text (custom sprite font) within an image (destination)
 
-      --///////////////////////////////////////////////////////////////////////
-      -- Image drawing functions
-      -- NOTE: Image software-rendering functions (CPU)
-      --///////////////////////////////////////////////////////////////////////
-      -- TODO : void ImageClearBackground(Image *dst, Color color);                                    // Clear image background with given color
-      -- TODO : void ImageDrawPixel(Image *dst, C_Int posX, C_Int posY, Color color);                          // Draw pixel within an image
-      -- TODO : void ImageDrawPixelV(Image *dst, Vector2 position, Color color);                           // Draw pixel within an image (Vector version)
-      -- TODO : void ImageDrawLine(Image *dst, C_Int startPosX, C_Int startPosY, C_Int endPosX, C_Int endPosY, Color color); // Draw line within an image
-      -- TODO : void ImageDrawLineV(Image *dst, Vector2 start, Vector2 end, Color color);                    // Draw line within an image (Vector version)
-      -- TODO : void ImageDrawLineEx(Image *dst, Vector2 start, Vector2 end, C_Int thick, Color color);           // Draw a line defining thickness within an image
-      -- TODO : void ImageDrawCircle(Image *dst, C_Int centerX, C_Int centerY, C_Int radius, Color color);            // Draw a filled circle within an image
-      -- TODO : void ImageDrawCircleV(Image *dst, Vector2 center, C_Int radius, Color color);                  // Draw a filled circle within an image (Vector version)
-      -- TODO : void ImageDrawCircleLines(Image *dst, C_Int centerX, C_Int centerY, C_Int radius, Color color);        // Draw circle outline within an image
-      -- TODO : void ImageDrawCircleLinesV(Image *dst, Vector2 center, C_Int radius, Color color);               // Draw circle outline within an image (Vector version)
-      -- TODO : void ImageDrawRectangle(Image *dst, C_Int posX, C_Int posY, C_Int width, C_Int height, Color color);      // Draw rectangle within an image
-      -- TODO : void ImageDrawRectangleV(Image *dst, Vector2 position, Vector2 size, Color color);             // Draw rectangle within an image (Vector version)
-      -- TODO : void ImageDrawRectangleRec(Image *dst, Rectangle rec, Color color);                        // Draw rectangle within an image
-      -- TODO : void ImageDrawRectangleLines(Image *dst, Rectangle rec, C_Int thick, Color color);               // Draw rectangle lines within an image
-      -- TODO : void ImageDrawTriangle(Image *dst, Vector2 v1, Vector2 v2, Vector2 v3, Color color);            // Draw triangle within an image
-      -- TODO : void ImageDrawTriangleEx(Image *dst, Vector2 v1, Vector2 v2, Vector2 v3, Color c1, Color c2, Color c3); // Draw triangle with C_Interpolated colors within an image
-      -- TODO : void ImageDrawTriangleLines(Image *dst, Vector2 v1, Vector2 v2, Vector2 v3, Color color);        // Draw triangle outline within an image
-      -- TODO : void ImageDrawTriangleFan(Image *dst, Vector2 *points, C_Int pointCount, Color color);            // Draw a triangle fan defined by points within an image (first vertex is the center)
-      -- TODO : void ImageDrawTriangleStrip(Image *dst, Vector2 *points, C_Int pointCount, Color color);          // Draw a triangle strip defined by points within an image
-      -- TODO : void ImageDraw(Image *dst, Image src, Rectangle srcRec, Rectangle dstRec, Color tint);          // Draw a source image within a destination image (tint applied to source)
-      -- TODO : void ImageDrawText(Image *dst, const char *text, C_Int posX, C_Int posY, C_Int fontSize, Color color);   // Draw text (using default font) within an image (destination)
-      -- TODO : void ImageDrawTextEx(Image *dst, Font font, const char *text, Vector2 position, float fontSize, float spacing, Color tint); // Draw text (custom sprite font) within an image (destination)
+--     --///////////////////////////////////////////////////////////////////////
+--     -- Texture loading functions
+--     -- NOTE: These functions require GPU access
+--     --///////////////////////////////////////////////////////////////////////
+--     -- TODO : Texture_2D LoadTexture(const char *fileName);                                          // Load texture from file C_Into GPU memory (VRAM)
+--     -- Load texture from image data
+--     function Load_Texture_2D_From_Image(Img : Image) return Texture_2D
+--        with 
+--           Import        => true,
+--           Convention    => C,
+--           External_Name => "LoadTextureFromImage";
+--     -- TODO : TextureCubemap LoadTextureCubemap(Image image, C_Int layout);                              // Load cubemap from image, multiple image cubemap layouts supported
+--     -- TODO : RenderTexture_2D LoadRenderTexture(int width, C_Int height);                                // Load texture for rendering (framebuffer)
+--     -- TODO : bool IsTextureValid(Texture_2D texture);                                             // Check if a texture is valid (loaded in GPU)
+--     -- TODO : void UnloadTexture(Texture_2D texture);                                              // Unload texture from GPU memory (VRAM)
+--     -- TODO : bool IsRenderTextureValid(RenderTexture_2D target);                                     // Check if a render texture is valid (loaded in GPU)
+--     -- TODO : void UnloadRenderTexture(RenderTexture_2D target);                                      // Unload render texture from GPU memory (VRAM)
+--     -- TODO : void UpdateTexture(Texture_2D texture, const void *pixels);                               // Update GPU texture with new data
+--     -- TODO : void UpdateTextureRec(Texture_2D texture, Rectangle rec, const void *pixels);                  // Update GPU texture rectangle with new data
 
-      --///////////////////////////////////////////////////////////////////////
-      -- Texture loading functions
-      -- NOTE: These functions require GPU access
-      --///////////////////////////////////////////////////////////////////////
-      -- TODO : Texture_2D LoadTexture(const char *fileName);                                          // Load texture from file C_Into GPU memory (VRAM)
-      -- Load texture from image data
-      function Load_Texture_2D_From_Image(Img : Image) return Texture_2D
-         with 
-            Import        => true,
-            Convention    => C,
-            External_Name => "LoadTextureFromImage";
-      -- TODO : TextureCubemap LoadTextureCubemap(Image image, C_Int layout);                              // Load cubemap from image, multiple image cubemap layouts supported
-      -- TODO : RenderTexture_2D LoadRenderTexture(int width, C_Int height);                                // Load texture for rendering (framebuffer)
-      -- TODO : bool IsTextureValid(Texture_2D texture);                                             // Check if a texture is valid (loaded in GPU)
-      -- TODO : void UnloadTexture(Texture_2D texture);                                              // Unload texture from GPU memory (VRAM)
-      -- TODO : bool IsRenderTextureValid(RenderTexture_2D target);                                     // Check if a render texture is valid (loaded in GPU)
-      -- TODO : void UnloadRenderTexture(RenderTexture_2D target);                                      // Unload render texture from GPU memory (VRAM)
-      -- TODO : void UpdateTexture(Texture_2D texture, const void *pixels);                               // Update GPU texture with new data
-      -- TODO : void UpdateTextureRec(Texture_2D texture, Rectangle rec, const void *pixels);                  // Update GPU texture rectangle with new data
+--     --///////////////////////////////////////////////////////////////////////
+--     -- Texture configuration functions
+--     --///////////////////////////////////////////////////////////////////////
+--     -- Generate GPU mipmaps for a texture
+--     procedure Gen_Texture_Mipmaps (Texture : access Texture_2D) 
+--        with
+--           Import        => true, 
+--           Convention    => C,
+--           External_Name => "GenTextureMipmaps";
+--     -- Set texture scaling filter mode
+--     procedure Set_Texture_Filter (Texture : Texture_2D; Filter : C_Int) 
+--        with
+--           Import        => true, 
+--           Convention    => C, 
+--           External_Name => "SetTextureFilter";
+--     -- Set texture wrapping mode
+--     procedure Set_Texture_Wrap (Texture : Texture_2D; Wrap : C_Int) 
+--        with
+--           Import        => true, 
+--            Convention   => C, 
+--           External_Name => "SetTextureWrap";
 
-      --///////////////////////////////////////////////////////////////////////
-      -- Texture configuration functions
-      --///////////////////////////////////////////////////////////////////////
-      -- Generate GPU mipmaps for a texture
-      procedure Gen_Texture_Mipmaps (Texture : access Texture_2D) 
-         with
-            Import        => true, 
-            Convention    => C,
-            External_Name => "GenTextureMipmaps";
-      -- Set texture scaling filter mode
-      procedure Set_Texture_Filter (Texture : Texture_2D; Filter : C_Int) 
-         with
-            Import        => true, 
-            Convention    => C, 
-            External_Name => "SetTextureFilter";
-      -- Set texture wrapping mode
-      procedure Set_Texture_Wrap (Texture : Texture_2D; Wrap : C_Int) 
-         with
-            Import        => true, 
-             Convention   => C, 
-            External_Name => "SetTextureWrap";
+--     --///////////////////////////////////////////////////////////////////////
+--     -- Texture drawing functions
+--     --///////////////////////////////////////////////////////////////////////
+--     -- Draw a Texture_2D
+--     procedure Draw_Texture (Texture : Texture_2D; Pos_X, Pos_Y : C_Int; Tint : Color) 
+--        with 
+--           Import        => True, 
+--           Convention    => C, 
+--           External_Name => "DrawTexture";
+--     -- Draw a Texture_2D with position defined as Vector2
+--     procedure Draw_Texture_V (Texture : Texture_2D; Position : Vector2; Tint : Color) 
+--        with 
+--           Import        => True, 
+--           Convention    => C, 
+--           External_Name => "DrawTextureV";
+--     -- Draw a Texture_2D with extended parameters
+--     procedure Draw_Texture_Ex (Texture : Texture_2D; Position : Vector2; Rotation, Scale : Float; Tint : Color) 
+--        with 
+--           Import        => True, 
+--           Convention    => C, 
+--           External_Name => "DrawTextureEx";
+--     -- Draw a part of a texture defined by a rectangle
+--     procedure Draw_Texture_Rec (Texture : Texture_2D; Source : Rectangle; Position : Vector2; Tint : Color) 
+--        with 
+--           Import        => True, 
+--           Convention    => C, 
+--           External_Name => "DrawTextureRec";
+--     -- Draw a part of a texture defined by a rectangle with 'pro' parameters
+--     procedure Draw_Texture_Pro (Texture : Texture_2D; Source, Dest : Rectangle; Origin : Vector2; Rotation : Float; Tint : Color) 
+--        with 
+--           Import        => True, 
+--           Convention    => C, 
+--           External_Name => "DrawTexturePro";
+--     -- Draws a texture (or part of it) that stretches or shrinks nicely
+--     procedure Draw_Texture_NPatch (Texture : Texture_2D; Info : NPatch_Info; Dest : Rectangle; Origin : Vector2; Rotation : Float; Tint : Color) 
+--        with 
+--           Import        => True, 
+--           Convention    => C, 
+--           External_Name => "DrawTextureNPatch";
 
-      --///////////////////////////////////////////////////////////////////////
-      -- Texture drawing functions
-      --///////////////////////////////////////////////////////////////////////
-      -- Draw a Texture_2D
-      procedure Draw_Texture (Texture : Texture_2D; Pos_X, Pos_Y : C_Int; Tint : Color) 
-         with 
-            Import        => True, 
-            Convention    => C, 
-            External_Name => "DrawTexture";
-      -- Draw a Texture_2D with position defined as Vector2
-      procedure Draw_Texture_V (Texture : Texture_2D; Position : Vector2; Tint : Color) 
-         with 
-            Import        => True, 
-            Convention    => C, 
-            External_Name => "DrawTextureV";
-      -- Draw a Texture_2D with extended parameters
-      procedure Draw_Texture_Ex (Texture : Texture_2D; Position : Vector2; Rotation, Scale : Float; Tint : Color) 
-         with 
-            Import        => True, 
-            Convention    => C, 
-            External_Name => "DrawTextureEx";
-      -- Draw a part of a texture defined by a rectangle
-      procedure Draw_Texture_Rec (Texture : Texture_2D; Source : Rectangle; Position : Vector2; Tint : Color) 
-         with 
-            Import        => True, 
-            Convention    => C, 
-            External_Name => "DrawTextureRec";
-      -- Draw a part of a texture defined by a rectangle with 'pro' parameters
-      procedure Draw_Texture_Pro (Texture : Texture_2D; Source, Dest : Rectangle; Origin : Vector2; Rotation : Float; Tint : Color) 
-         with 
-            Import        => True, 
-            Convention    => C, 
-            External_Name => "DrawTexturePro";
-      -- Draws a texture (or part of it) that stretches or shrinks nicely
-      procedure Draw_Texture_NPatch (Texture : Texture_2D; Info : NPatch_Info; Dest : Rectangle; Origin : Vector2; Rotation : Float; Tint : Color) 
-         with 
-            Import        => True, 
-            Convention    => C, 
-            External_Name => "DrawTextureNPatch";
-
-      --///////////////////////////////////////////////////////////////////////
-      -- Color/pixel related functions
-      --///////////////////////////////////////////////////////////////////////
-      -- TODO : bool ColorIsEqual(Color col1, Color col2);                     // Check if two colors are equal
-      -- TODO : Color Fade(Color color, float alpha);                         // Get color with alpha applied, alpha goes from 0.0f to 1.0f
-      -- TODO : C_Int ColorToInt(Color color);                                // Get hexadecimal value for a Color (0xRRGGBBAA)
-      -- TODO : Vector4 ColorNormalize(Color color);                          // Get Color normalized as float [0..1]
-      -- TODO : Color ColorFromNormalized(Vector4 normalized);                  // Get Color from normalized values [0..1]
-      -- TODO : Vector3 ColorToHSV(Color color);                             // Get HSV values for a Color, hue [0..360], saturation/value [0..1]
-      -- TODO : Color ColorFromHSV(float hue, float saturation, float value);       // Get a Color from HSV values, hue [0..360], saturation/value [0..1]
-      -- TODO : Color ColorTint(Color color, Color tint);                      // Get color multiplied with another color
-      -- TODO : Color ColorBrightness(Color color, float factor);                // Get color with brightness correction, brightness factor goes from -1.0f to 1.0f
-      -- TODO : Color ColorContrast(Color color, float contrast);                // Get color with contrast correction, contrast values between -1.0f and 1.0f
-      -- TODO : Color ColorAlpha(Color color, float alpha);                     // Get color with alpha applied, alpha goes from 0.0f to 1.0f
-      -- TODO : Color ColorAlphaBlend(Color dst, Color src, Color tint);           // Get src alpha-blended C_Into dst color with tint
-      -- TODO : Color ColorLerp(Color color1, Color color2, float factor);         // Get color lerp C_Interpolation between two colors, factor [0.0f..1.0f]
-      -- TODO : Color GetColor(unsigned C_Int hexValue);                        // Get Color structure from hexadecimal value
-      -- TODO : Color GetPixelColor(void *srcPtr, C_Int format);                  // Get Color from a source pixel pointer of certain format
-      -- TODO : void SetPixelColor(void *dstPtr, Color color, C_Int format);         // Set color formatted C_Into destination pixel pointer
-      -- TODO : C_Int GetPixelDataSize(int width, C_Int height, C_Int format);           // Get pixel data size in bytes for certain format
-   end Textures;
+--     --///////////////////////////////////////////////////////////////////////
+--     -- Color/pixel related functions
+--     --///////////////////////////////////////////////////////////////////////
+--     -- TODO : bool ColorIsEqual(Color col1, Color col2);                     // Check if two colors are equal
+--     -- TODO : Color Fade(Color color, float alpha);                         // Get color with alpha applied, alpha goes from 0.0f to 1.0f
+--     -- TODO : C_Int ColorToInt(Color color);                                // Get hexadecimal value for a Color (0xRRGGBBAA)
+--     -- TODO : Vector4 ColorNormalize(Color color);                          // Get Color normalized as float [0..1]
+--     -- TODO : Color ColorFromNormalized(Vector4 normalized);                  // Get Color from normalized values [0..1]
+--     -- TODO : Vector3 ColorToHSV(Color color);                             // Get HSV values for a Color, hue [0..360], saturation/value [0..1]
+--     -- TODO : Color ColorFromHSV(float hue, float saturation, float value);       // Get a Color from HSV values, hue [0..360], saturation/value [0..1]
+--     -- TODO : Color ColorTint(Color color, Color tint);                      // Get color multiplied with another color
+--     -- TODO : Color ColorBrightness(Color color, float factor);                // Get color with brightness correction, brightness factor goes from -1.0f to 1.0f
+--     -- TODO : Color ColorContrast(Color color, float contrast);                // Get color with contrast correction, contrast values between -1.0f and 1.0f
+--     -- TODO : Color ColorAlpha(Color color, float alpha);                     // Get color with alpha applied, alpha goes from 0.0f to 1.0f
+--     -- TODO : Color ColorAlphaBlend(Color dst, Color src, Color tint);           // Get src alpha-blended C_Into dst color with tint
+--     -- TODO : Color ColorLerp(Color color1, Color color2, float factor);         // Get color lerp C_Interpolation between two colors, factor [0.0f..1.0f]
+--     -- TODO : Color GetColor(C.unsigned C_Int hexValue);                        // Get Color structure from hexadecimal value
+--     -- TODO : Color GetPixelColor(void *srcPtr, C_Int format);                  // Get Color from a source pixel pointer of certain format
+--     -- TODO : void SetPixelColor(void *dstPtr, Color color, C_Int format);         // Set color formatted C_Into destination pixel pointer
+--     -- TODO : C_Int GetPixelDataSize(int width, C_Int height, C_Int format);           // Get pixel data size in bytes for certain format
+--  end Textures;
 end Raylib_Ada;
